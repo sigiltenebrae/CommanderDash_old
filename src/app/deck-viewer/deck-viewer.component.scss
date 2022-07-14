@@ -1,0 +1,369 @@
+@import "src/styles";
+.star {
+  font-size: 1.5rem;
+  color: #b0c4de;
+}
+.filled {
+  color: #1e90ff;
+}
+
+.hug {
+  padding: 0;
+  margin: 0;
+}
+
+.list-group-item:hover {
+  opacity: 0.7;
+}
+
+.commander-nav-button-container {
+  position: relative;
+  height: 100%;
+  background-color: blue;
+  float: left;
+}
+
+.commander-nav-button {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 75px;
+  width:  50px;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  z-index: 2;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  display: block;
+  border-right: 1px solid white;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.commander-nav-button:hover {
+  opacity: 80%;
+  cursor: pointer;
+}
+
+.commander-nav-icon {
+  position: relative;
+  height: 100%;
+}
+
+.commander-nav-icon i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%) scale(1, 2);
+}
+
+.deck-preview {
+  position: relative;
+  float: left;
+  height: 320px;
+  width: 460px;
+  overflow: hidden;
+  margin: 10px;
+  background-color: black;
+  border-radius: 5px;
+}
+
+.deck-preview img {
+  height: 768px;
+  width: 550px;
+  margin-top: -100px;
+  margin-right: -45px;
+  margin-left: -45px;
+}
+
+.deck-preview:hover img{
+  opacity: 0.5;
+}
+
+.deck-preview:hover .card-star-build, .deck-preview:hover .card-star-play, .deck-preview:hover .card-star-win,
+.deck-preview:hover .deck-themes {
+  opacity: 0.5;
+}
+
+.deck-preview .edit-button {
+  position: absolute;
+  display: none;
+  top: 0;
+  right: 0;
+}
+
+.deck-preview i {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2em;
+  color: white;
+  opacity: 0.8;
+}
+
+.deck-preview i:hover {
+  color: rgb(175, 175, 175);
+}
+
+.deck-preview:hover .edit-button {
+  display: block;
+}
+
+.deck-preview .mtg-logo {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 75px;
+  height: 75px;
+}
+
+.deck-preview .card-star-build {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+.deck-preview .card-star-play {
+  position: absolute;
+  bottom: 10px;
+  left: 65px;
+  width: 50px;
+  height: 50px;
+}
+
+.deck-preview .card-star-win {
+  position: absolute;
+  bottom: 10px;
+  left: 120px;
+  width: 50px;
+  height: 50px;
+}
+
+.deck-preview .card-star {
+  opacity:0.8;
+  fill-opacity:1;
+  stroke-width:6.8079;
+  stroke-linejoin:round;
+  stroke-dasharray:none;
+  stroke-opacity:1;
+  stop-color:#000000;
+  stop-opacity:1;
+  stroke: white;
+}
+.deck-preview .card-star-white {
+  fill:rgb(100%,80.076599%,39.988708%);
+}
+.deck-preview .card-star-blue {
+  fill:rgb(10.984802%,56.834412%,78.90625%);
+}
+.deck-preview .card-star-black {
+  fill:rgb(65.818787%,63.867188%,59.959412%);
+}
+.deck-preview .card-star-red {
+  fill:rgb(100%,39.988708%,0%);
+}
+.deck-preview .card-star-green {
+  fill:rgb(10.984802%,78.90625%,25.097656%);
+}
+
+.deck-preview .commander-name {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: Beleren;
+  color: white;
+  opacity: 0.8;
+  text-shadow: 0 0 5px black;
+  text-decoration: underline;
+  font-size: 1.25em;
+}
+
+.deck-preview .deck-title {
+  position: absolute;
+  top: 40px;
+  left: 10px;
+  font-family: Beleren;
+  color: white;
+  opacity: 0.8;
+  text-shadow: 0 0 5px black;
+}
+
+.deck-preview .deck-themes {
+  position: absolute;
+  top: 70px;
+  left: 10px;
+  font-family: Beleren;
+  color: white;
+  opacity: 0.8;
+  text-shadow: 0 0 5px black;
+  text-align: left;
+}
+
+
+.card-star-tooltip .tooltip-inner{
+  opacity: 1;
+  background-color: rgb(8, 22, 46);
+  max-width: 150px;
+}
+.card-star-tooltip.bs-tooltip-end .tooltip-arrow::before {
+  opacity: 1;
+  border-right-color: rgb(8, 22, 46);
+}
+.card-star-tooltip.bs-tooltip-start .tooltip-arrow::before {
+  opacity: 1;
+  border-left-color: rgb(8, 22, 46);
+}
+.card-star-tooltip.bs-tooltip-top .tooltip-arrow::before {
+  opacity: 1;
+  border-top-color: rgb(8, 22, 46);
+}
+.card-star-tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+  opacity: 1;
+  border-bottom-color: rgb(8, 22, 46);
+}
+
+.star {
+  position: relative;
+  font-size: 2.5rem;
+  display: inline-block;
+}
+
+.star-label {
+  color: white;
+  padding-top: 1.5rem
+}
+
+.cmdr-check {
+  font-size: 1.5rem;
+  margin-left: 8.5rem;
+  cursor: pointer;
+}
+
+.cmdr-check-label {
+  color: white;
+  padding-top: 0.5rem;
+}
+
+.deck-label {
+  color:white;
+  padding-top: 1rem;
+}
+
+.card-edit-image {
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+.card-carosel-view {
+  position: absolute;
+  left: 50%;
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.card-carosel {
+  position: relative;
+  float: left;
+  height: 384px;
+  //width: 335px;
+  width: 275px;
+  overflow: hidden;
+  background-color: black;
+  border-radius: 10px;
+}
+
+.card-carosel .card-image {
+  height: 384px;
+  width: 275px;
+  position: absolute;
+  left: 0px;
+  z-index: 1;
+}
+
+.card-carosel .card-carosel-left {
+  position: absolute;
+  left:0;
+  top: 0;
+  height: 384px;
+  width: 40px;
+  background-color: black;
+  display: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.card-carosel .card-carosel-left .fa-angle-left {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%) scale(1, 2);
+  color: white;
+  z-index: 2;
+}
+
+.card-carosel .card-carosel-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 384px;
+  width: 40px;
+  background-color: black;
+  display: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.card-carosel .card-carosel-right .fa-angle-right {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%) scale(1, 2);
+  color: white;
+  z-index: 2;
+}
+
+.card-carosel .card-image-refresh {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -ms-transform: translateY(-50%) translateX(-50%);;
+  transform: translateY(-50%) translateX(-50%) scale(5, 5);
+  color: white;
+  display: none;
+  z-index: 2;
+}
+
+.card-carosel .card-image-refresh i {
+  cursor: pointer;
+}
+
+.card-carosel:hover .card-carosel-left,
+.card-carosel:hover .card-carosel-right,
+.card-carosel:hover .card-image-refresh {
+  display: block;
+  opacity: 0.7;
+}
+
+.card-carosel .card-carosel-left:hover,
+.card-carosel .card-carosel-right:hover {
+  opacity: 0.85;
+}
+
+.card-carosel .card-image-refresh i:hover {
+  opacity: 0.85;
+  animation: fa-spin 1.5s infinite linear;
+}
+
+.dropdown-menu {
+  background-color: #303641;
+}
+
+.dropdown-item{
+  color: white;
+}

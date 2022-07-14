@@ -1,0 +1,45 @@
+body {
+  background-image: url('/assets/backgrounds/warbolas.jpg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+
+.offcanvas-body {
+  background-color: rgba(10, 10, 10, 255);
+}
+
+.card {
+  background-color: rgba(0,0,0,0);
+}
+
+.card-header {
+  //background-color: rgba(10, 10, 10, 255);
+  background-color: rgba(8, 22, 46, 0.8);
+}
+
+.card-body {
+  //background-color: rgba(30, 30, 30, 255);
+  background-color: rgba(34, 42, 57, 0.8);
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.invisible_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.invisible_scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.btn-round {
+  border-radius: 20px;
+}
+
