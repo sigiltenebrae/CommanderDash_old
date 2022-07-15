@@ -1,0 +1,14 @@
+@import "src/styles";
+
+.deck-preview:hover img{
+  opacity: 1.0 !important;
+}
+
+.deck-preview:hover .card-star-build, .deck-preview:hover .card-star-play, .deck-preview:hover .card-star-win,
+{
+  opacity: 1.0 !important;
+}
+
+.deck-preview:hover .deck-themes {
+  opacity: 0.8 !important;
+}
