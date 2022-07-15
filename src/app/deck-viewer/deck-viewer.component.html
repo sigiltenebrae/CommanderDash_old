@@ -16,8 +16,8 @@
 </ng-template>
 
 
-<div *ngIf="decks && decks.length > 0" class="row" style="margin: 20px 20px 0 0">
-  <div class="col-xl-3" *ngFor="let deck of decks">
+<div *ngIf="decks && decks.length > 0" class="row justify-content-lg-center" style="margin: 20px 20px 0 0">
+  <div class="col-lg-auto" *ngFor="let deck of decks">
     <div class="deck-preview">
       <img src="{{deck.image_url}}" alt="Missing Image">
       <div class="mtg-logo">
