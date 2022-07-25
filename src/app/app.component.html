@@ -1,1 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <img class="magic-nav-logo" src="assets/magic-logo.webp" alt="Commander" loading="lazy">
+    </a>
+    <button class="navbar-toggler"
+            type="button"
+            (click)="commandernavCollapsed = !commandernavCollapsed">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div [ngbCollapse]="commandernavCollapsed" class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="commandernavCollapsed = true">Create</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" (click)="commandernavCollapsed = true">Themes</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search Decks</button>
+      </form>
+    </div>
+  </div>
+</nav>
 <router-outlet></router-outlet>
