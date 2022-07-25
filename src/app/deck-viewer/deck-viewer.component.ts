@@ -34,28 +34,6 @@ export class DeckViewerComponent implements OnInit {
 
   constructor(private apiService:ApiInterfaceService, private modalService: NgbModal, private offcanvas: NgbOffcanvas) { }
 
-  // @ts-ignore
-  card_search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      tap(() => this.searching = true),
-      // @ts-ignore
-      switchMap(async term => {
-        this.searching = true;
-        return await Scry.Cards.autoCompleteName(term);
-      }),
-      tap(() => this.searching = false)
-    );
-
-  theme_search: OperatorFunction<string, readonly {id: number, name: string}[]> = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      map(term => term === '' ? []
-        : this.all_themes.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
-  theme_formatter = (x: {name: string}) => x.name;
-
   ngOnInit(): void {
     this.loadPage();
   }
