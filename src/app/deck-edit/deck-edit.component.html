@@ -1,7 +1,7 @@
 <div *ngIf="deck && deck.commander" class="container-fluid" style="margin-top: 10px">
   <div class="row">
-    <div class="col-lg-3">
-      <div class="row" style="margin: 10px">
+    <div class="col-xl-auto">
+      <div class="row justify-content-center" style="margin: 10px">
         <div class="deck-preview">
           <img src="{{deck.image_url}}" alt="Missing Image">
           <div class="mtg-logo">
@@ -276,7 +276,7 @@
           </svg>
         </div>
       </div>
-      <div class="row">
+      <div class="row" style="margin: 10px">
         <div class="card-edit-image">
           <div class="card-carosel-view">
             <div class="card-carosel">
@@ -297,7 +297,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-8">
+    <div class="col-xl-auto">
       <div class="container-fluid">
         <div class="card" style="height: 100%">
           <div class="card-header" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
