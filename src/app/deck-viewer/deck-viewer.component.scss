@@ -166,7 +166,6 @@
   text-align: left;
 }
 
-
 .card-star-tooltip .tooltip-inner{
   opacity: 1;
   background-color: rgb(8, 22, 46);
@@ -187,76 +186,4 @@
 .card-star-tooltip.bs-tooltip-bottom .tooltip-arrow::before {
   opacity: 1;
   border-bottom-color: rgb(8, 22, 46);
-}
-
-
-
-
-.commander-nav-button-container {
-  position: relative;
-  height: 100%;
-  background-color: blue;
-  float: left;
-}
-
-.commander-nav-button {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  height: 75px;
-  width:  50px;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  z-index: 2;
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 50%;
-  display: block;
-  border-right: 1px solid white;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
-}
-
-.commander-nav-button:hover {
-  opacity: 80%;
-  cursor: pointer;
-}
-
-.commander-nav-icon {
-  position: relative;
-  height: 100%;
-}
-
-.commander-nav-icon i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%) scale(1, 2);
-}
-
-.star {
-  position: relative;
-  font-size: 2.5rem;
-  display: inline-block;
-}
-
-.star-label {
-  color: white;
-  padding-top: 1.5rem
-}
-
-.cmdr-check {
-  font-size: 1.5rem;
-  margin-left: 8.5rem;
-  cursor: pointer;
-}
-
-.cmdr-check-label {
-  color: white;
-  padding-top: 0.5rem;
-}
-
-.deck-label {
-  color:white;
-  padding-top: 1rem;
 }

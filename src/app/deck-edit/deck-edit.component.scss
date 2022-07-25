@@ -10,7 +10,7 @@ label {
   color: white;
 }
 
-.deck-preview {
+.deck-edit-preview {
   position: relative;
   float: left;
   height: 320px;
@@ -21,7 +21,7 @@ label {
   border-radius: 5px;
 }
 
-.deck-preview img {
+.deck-edit-preview img {
   height: 768px;
   width: 550px;
   margin-top: -100px;
@@ -29,7 +29,7 @@ label {
   margin-left: -45px;
 }
 
-.deck-preview .edit-button {
+.deck-edit-preview .edit-button {
   position: absolute;
   display: none;
   top: 50%;
@@ -38,7 +38,7 @@ label {
   transform: translateY(-50%) translateX(-50%);
 }
 
-.deck-preview i {
+.deck-edit-preview i {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -53,7 +53,7 @@ label {
   opacity: 0.6;
 }
 
-.deck-preview .mtg-logo {
+.deck-edit-preview .mtg-logo {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -61,7 +61,7 @@ label {
   height: 75px;
 }
 
-.deck-preview .card-star-build {
+.deck-edit-preview .card-star-build {
   position: absolute;
   bottom: 10px;
   left: 10px;
@@ -69,7 +69,7 @@ label {
   height: 50px;
 }
 
-.deck-preview .card-star-play {
+.deck-edit-preview .card-star-play {
   position: absolute;
   bottom: 10px;
   left: 65px;
@@ -77,7 +77,7 @@ label {
   height: 50px;
 }
 
-.deck-preview .card-star-win {
+.deck-edit-preview .card-star-win {
   position: absolute;
   bottom: 10px;
   left: 120px;
@@ -85,7 +85,7 @@ label {
   height: 50px;
 }
 
-.deck-preview .card-star {
+.deck-edit-preview .card-star {
   opacity:0.8;
   fill-opacity:1;
   stroke-width:6.8079;
@@ -96,23 +96,23 @@ label {
   stop-opacity:1;
   stroke: white;
 }
-.deck-preview .card-star-white {
+.deck-edit-preview .card-star-white {
   fill:rgb(100%,80.076599%,39.988708%);
 }
-.deck-preview .card-star-blue {
+.deck-edit-preview .card-star-blue {
   fill:rgb(10.984802%,56.834412%,78.90625%);
 }
-.deck-preview .card-star-black {
+.deck-edit-preview .card-star-black {
   fill:rgb(65.818787%,63.867188%,59.959412%);
 }
-.deck-preview .card-star-red {
+.deck-edit-preview .card-star-red {
   fill:rgb(100%,39.988708%,0%);
 }
-.deck-preview .card-star-green {
+.deck-edit-preview .card-star-green {
   fill:rgb(10.984802%,78.90625%,25.097656%);
 }
 
-.deck-preview .commander-name {
+.deck-edit-preview .commander-name {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -124,7 +124,7 @@ label {
   font-size: 1.25em;
 }
 
-.deck-preview .deck-title {
+.deck-edit-preview .deck-title {
   position: absolute;
   top: 40px;
   left: 10px;
@@ -134,7 +134,7 @@ label {
   text-shadow: 0 0 5px black;
 }
 
-.deck-preview .deck-themes {
+.deck-edit-preview .deck-themes {
   position: absolute;
   top: 70px;
   left: 10px;
