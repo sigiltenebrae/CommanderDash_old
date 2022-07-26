@@ -333,7 +333,7 @@
                   <div class="deck-edit-container">
                     <div class="deck-edit">
                       <div class="mb-3 row">
-                        <label for="deckNameEdit" class="col-2 deck-label">Deck Name:</label>
+                        <label for="deckNameEdit" class="col-lg-2 deck-label text-wrap">Deck Name:</label>
                         <div class="col-sm-10">
                           <input id="deckNameEdit"
                                  type="text" class="form-control bg-dark text-white"
@@ -341,7 +341,7 @@
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label class="col-2 deck-label" for="deckUrlEdit">Deck URL:</label>
+                        <label class="col-lg-2 deck-label" for="deckUrlEdit">Deck URL:</label>
                         <div class="col-sm-10">
                           <input id="deckUrlEdit"
                                  type="text" class="form-control bg-dark text-white"
@@ -350,7 +350,7 @@
                       </div>
 
                       <div class="mb-3 row">
-                        <label class="col-2 star-label">Fun to Build:</label>
+                        <label class="col-lg-2 star-label">Fun to Build:</label>
                         <div class="col-sm-10">
                           <ngb-rating [(rate)]="deck.build_rating" [max]="5">
                             <ng-template let-fill="fill" let-index="index">
@@ -360,7 +360,7 @@
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label class="col-2 star-label">Fun to Play:</label>
+                        <label class="col-lg-2 star-label">Fun to Play:</label>
                         <div class="col-sm-10">
                           <ngb-rating [(rate)]="deck.play_rating" [max]="5">
                             <ng-template let-fill="fill" let-index="index">
@@ -370,7 +370,7 @@
                         </div>
                       </div>
                       <div class="mb-3 row">
-                        <label class="col-2 star-label">Win Rate:</label>
+                        <label class="col-lg-2 star-label">Win Rate:</label>
                         <div class="col-sm-10">
                           <ngb-rating [(rate)]="deck.win_rating" [max]="5">
                             <ng-template let-fill="fill" let-index="index">
@@ -381,7 +381,7 @@
                       </div>
 
                       <div class="mb-3 row">
-                        <div class="col-2">
+                        <div class="col-lg-2">
                           <label class="form-check-label cmdr-check-label" for="flexCheckDeckActive">
                             Active
                           </label>
@@ -403,7 +403,7 @@
                           <div class="input-group mb-2">
                             <input type="text" class="form-control bg-dark text-white" value="{{theme.name}}" disabled>
                             <span class="input-group-append">
-                          <button class="btn btn-white border text-white bg-dark" type="button" (click)="removeTheme(theme)"><i class="fa fa-times"></i></button>
+                          <button class="btn btn-outline-light" type="button" (click)="removeTheme(theme)"><i class="fa fa-times"></i></button>
                         </span>
                           </div>
                         </div>
@@ -418,7 +418,7 @@
                             <input type="text" class="form-control bg-dark text-white"
                                    [(ngModel)]="temp_theme" [ngbTypeahead]="theme_search" [inputFormatter]="theme_formatter" [resultTemplate]="themert" [editable]="false">
                             <span class="input-group-append">
-                      <button class="btn btn-white border text-white bg-dark" type="button" (click)="addTheme()"><i class="fa fa-plus"></i></button>
+                      <button class="btn btn-outline-light" type="button" (click)="addTheme()"><i class="fa fa-plus"></i></button>
                     </span>
                           </div>
                         </div>
