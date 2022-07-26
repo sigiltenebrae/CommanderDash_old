@@ -9,12 +9,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { DeckEditComponent } from './deck-edit/deck-edit.component';
+import { ThemeEditComponent } from './theme-edit/theme-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DeckViewerComponent,
-    DeckEditComponent
+    DeckEditComponent,
+    ThemeEditComponent
   ],
     imports: [
         BrowserModule,
