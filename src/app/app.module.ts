@@ -23,7 +23,8 @@ import { ThemeEditComponent } from './theme-edit/theme-edit.component';
         HttpClientModule,
         RouterModule.forRoot([
           {path: '', component: DeckViewerComponent},
-          {path: 'decks/:deckId', component: DeckEditComponent}
+          {path: 'decks/:deckId', component: DeckEditComponent},
+          {path: 'themes', component:ThemeEditComponent}
         ]),
         NgbModule,
         FormsModule

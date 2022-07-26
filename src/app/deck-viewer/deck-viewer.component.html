@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div *ngIf="decks && decks.length > 0" class="row justify-content-lg-center" style="margin: 20px 20px 0 0">
     <div class="col-lg-auto" *ngFor="let deck of decks">
       <div class="deck-preview">
@@ -281,43 +281,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-<ng-template #themeEdit>
-  <div>
-    <div class="modal-header">
-      <div class="col-11">
-        <h4>Themes</h4>
-      </div>
-      <div class="col-1" style="text-align: right">
-        <button type="button" class="btn-close" aria-label="Close" (click)="closeThemeEdit()"></button>
-      </div>
-    </div>
-    <div class="modal-body">
-      <div style="max-height: 70vh; overflow-y: scroll">
-        <div *ngFor="let theme of all_themes" class="input-group mb-2">
-          <input type="text" class="form-control" value="{{theme.name}}" disabled>
-          <span class="input-group-append">
-            <button class="btn btn-white border-start-0 border" type="button" (click)="deleteTheme(theme)">
-              <i class="fa fa-times"></i>
-            </button>
-          </span>
-        </div>
-      </div>
-      <div class="input-group mb-2">
-        <input type="text" class="form-control" [(ngModel)]="temp_theme">
-        <span class="input-group-append">
-            <button class="btn btn-white border-start-0 border" type="button" (click)="createTheme()">
-                <i class="fa fa-plus"></i>
-            </button>
-          </span>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="updateThemes()">Save</button>
-    </div>
-  </div>
-
-</ng-template>

@@ -1,3 +1,48 @@
 <div class="container" style="margin-top: 10px">
+  <div class="row justify-content-lg-center">
+    <div class="col-xl-8">
+      <div class="card" style="height: 100%">
+        <div class="card-header" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
+          <div class="row">
+            <div class="col-11">
+              <h4>Themes</h4>
+            </div>
+            <div class="col-1" style="text-align: right">
+              <button type="button" class="btn-close btn-close-white" aria-label="Close" [routerLink]="['/']"></button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body" style="border-top: 1px solid black; height: 100%;">
+          <div class="container" style="margin-top: 50px">
+            <div class="row">
+              <div *ngFor="let theme of all_themes" class="col-6">
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" value="{{theme.name}}" disabled>
+                  <span class="input-group-append">
+                    <button class="btn btn-white border-start-0 border" type="button" (click)="deleteTheme(theme)">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" [(ngModel)]="temp_theme">
+                  <span class="input-group-append">
+                    <button class="btn btn-white border-start-0 border" type="button" (click)="createTheme()">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
 
+          </div>
+        </div>
+        <div class="card-body" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; text-align: right; border-top: 1px solid black; height: 10%; margin-bottom: 20px">
+          <button type="button" class="btn btn-outline-dark" (click)="updateThemes()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
