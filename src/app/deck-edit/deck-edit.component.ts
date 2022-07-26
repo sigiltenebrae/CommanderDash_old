@@ -12,7 +12,6 @@ import * as Scry from "scryfall-sdk";
 export class DeckEditComponent implements OnInit {
 
   new_deck: boolean = false;
-  creating: boolean = false;
 
   deck: any = null;
   deckId: any = null;
@@ -32,33 +31,55 @@ export class DeckEditComponent implements OnInit {
   constructor(public router: Router, private route: ActivatedRoute, private apiService:ApiInterfaceService) { }
 
   ngOnInit(): void {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     const routeParams = this.route.snapshot.paramMap;
     this.deckId = Number(routeParams.get('deckId'));
-    this.new_deck = false;
-    this.creating = false;
+    if (this.deckId > -1) {
+      this.new_deck = false;
+    }
+    else {
+      console.log('new deck');
+      this.new_deck = true;
+      this.deck = {};
+      this.deck.commander = "";
+      this.deck.friendly_name = "";
+      this.deck.url = "";
+      this.deck.image_url = "";
+      this.deck.image_url_back = "";
+      this.deck.build_rating = 0;
+      this.deck.play_rating = 0;
+      this.deck.win_rating = 0;
+      this.deck.themes = [];
+      this.deck.deleteThemes = [];
+      this.deck.active = true;
+      console.log(this.deck);
+    }
     this.loadPage();
   }
 
   loadPage() {
-    this.getDeck().subscribe(
-      (response) => {
-        this.deck = response;
-        this.deck.image_url_back = "";
-        this.deck.commander_new = this.deck.commander;
-        this.getThemesForDeck(this.deck.id).subscribe(
-          (resp) => {
-            this.deck.themes = resp;
-            this.deck.deleteThemes = [];
-          });
-        if (this.deck.image_url !== "") {
-          this.current_image = 0;
-          // @ts-ignore
-          this.currentImages.push(this.deck.image_url);
+    if (!this.new_deck)
+    {
+      this.getDeck().subscribe(
+        (response) => {
+          this.deck = response;
+          this.deck.image_url_back = "";
+          this.deck.commander_new = this.deck.commander;
+          this.getThemesForDeck(this.deck.id).subscribe(
+            (resp) => {
+              this.deck.themes = resp;
+              this.deck.deleteThemes = [];
+            });
+          if (this.deck.image_url !== "") {
+            this.current_image = 0;
+            // @ts-ignore
+            this.currentImages.push(this.deck.image_url);
+          }
+          this.deck.image_url_back = this.deck.image_url;
+          this.getImages().then( r => {});
         }
-        this.deck.image_url_back = this.deck.image_url;
-        this.getImages().then( r => {});
-      }
-    );
+      );
+    }
     this.getAllThemes().subscribe(
       (response:any) => {
         this.all_themes = response;
@@ -66,6 +87,7 @@ export class DeckEditComponent implements OnInit {
       }
     );
     this.deleting = false;
+    console.log(this.deck);
   }
 
   // @ts-ignore
@@ -180,7 +202,7 @@ export class DeckEditComponent implements OnInit {
   }
 
   updateDeck() {
-    if (!this.creating) {
+    if (!this.new_deck) {
       if (this.deck) {
         this.apiService.putApiDataToServer(this.decks_url + "/" + this.deck.id, JSON.stringify(this.deck)).subscribe(
           (response) => {
@@ -198,10 +220,8 @@ export class DeckEditComponent implements OnInit {
         if (this.deck.friendly_name && this.deck.friendly_name !== "") {
           this.apiService.postApiDataToServer(this.decks_url, JSON.stringify(this.deck)).subscribe(
             (response) => {
-              this.creating = false;
               this.router.navigate(['/']);
             }, (error) => {
-              this.creating = false;
               this.router.navigate(['/']);
             });
         }
@@ -226,5 +246,4 @@ export class DeckEditComponent implements OnInit {
       }
     }
   }
-
 }

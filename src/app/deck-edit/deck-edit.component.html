@@ -1,9 +1,9 @@
-<div *ngIf="deck && deck.commander" class="container-fluid" style="margin-top: 10px">
+<div class="container-fluid" style="margin-top: 10px">
   <div class="row">
     <div class="col-xl-auto">
       <div class="row justify-content-center" style="margin: 10px">
         <div class="deck-edit-preview">
-          <img src="{{deck.image_url}}" alt="Missing Image">
+          <img src="{{deck.image_url}}">
           <div class="mtg-logo">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 506 532" version="1.1">
               <g *ngIf="colors[deck.commander]" id="surface1">
@@ -297,7 +297,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-auto">
+    <div class="col-xl-6">
       <div class="container-fluid">
         <div class="card" style="height: 100%">
           <div class="card-header" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
