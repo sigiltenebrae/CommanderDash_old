@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
 
   public current_deck: any;
   all_decks: any[] = [];
+  deck_colors: any = {};
 
   public commanderNavCollapsed = true;
 
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
       (response:any) => {
         this.all_decks = response;
         this.all_decks.sort((a, b) => (a.name > b.name) ? 1 : -1);
+        this.loadDeckScryfallInfo().then(r => {});
       }
     );
   }
@@ -42,8 +44,7 @@ export class AppComponent implements OnInit {
     for (let deck of this.all_decks) {
       let cur = await Scry.Cards.byName(deck.commander);
       // @ts-ignore
-      this.colors[deck.commander] = cur.color_identity;
-
+      this.deck_colors[deck.commander] = cur.color_identity;
     }
   }
 

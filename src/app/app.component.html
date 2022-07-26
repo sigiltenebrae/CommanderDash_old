@@ -23,7 +23,34 @@
 
 
      <ng-template #deckrt let-r="result" let-t="term">
-        <ngb-highlight [result]="r.commander + ' - ' + r.friendly_name" [term]="t"></ngb-highlight>
+       <div class="container">
+         <div class="row justify-content-between">
+           <div class="col-auto">
+             <ngb-highlight [result]="r.commander + ' - ' + r.friendly_name" [term]="t"></ngb-highlight>
+           </div>
+           <div class="col-auto">
+             <div class="container">
+               <div class="row justify-content-end">
+                 <div *ngIf="deck_colors[r.commander].includes('W');" class="col" style="width: 16px">
+                   <img src="assets/color_symbols/W.png" style="height: 16px">
+                 </div>
+                 <div *ngIf="deck_colors[r.commander].includes('U');" class="col" style="width: 16px">
+                   <img src="assets/color_symbols/U.png" style="height: 16px">
+                 </div>
+                 <div *ngIf="deck_colors[r.commander].includes('B');" class="col" style="width: 16px">
+                   <img src="assets/color_symbols/B.png" style="height: 16px">
+                 </div>
+                 <div *ngIf="deck_colors[r.commander].includes('R');" class="col" style="width: 16px">
+                   <img src="assets/color_symbols/R.png" style="height: 16px">
+                 </div>
+                 <div *ngIf="deck_colors[r.commander].includes('G');" class="col" style="width: 16px">
+                   <img src="assets/color_symbols/G.png" style="height: 16px">
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
       </ng-template>
 
 
