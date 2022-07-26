@@ -49,3 +49,16 @@ body {
 .dropdown-item{
   color: white;
 }
+
+.btn-outline-danger
+
+{
+  color:crimson;
+  border-color: crimson;
+}
+
+.btn-outline-danger:hover, .btn-outline-danger:focus, .btn-outline-danger:active, .btn-outline-danger.active, .open .dropdown-toggle.btn-outline-danger {
+  background-color: crimson;
+  color: white;
+  border-color: crimson;
+}

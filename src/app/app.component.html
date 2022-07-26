@@ -5,23 +5,50 @@
     </a>
     <button class="navbar-toggler"
             type="button"
-            (click)="commandernavCollapsed = !commandernavCollapsed">
+            (click)="commanderNavCollapsed = !commanderNavCollapsed">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div [ngbCollapse]="commandernavCollapsed" class="collapse navbar-collapse">
+    <div [ngbCollapse]="commanderNavCollapsed" class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/decks', -1]" (click)="commandernavCollapsed = true">Create</a>
+          <a class="nav-link" [routerLink]="['/decks', -1]" (click)="commanderNavCollapsed = true">Create</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/themes']" (click)="commandernavCollapsed = true">Themes</a>
+          <a class="nav-link" [routerLink]="['/themes']" (click)="commanderNavCollapsed = true">Themes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/metrics']" (click)="commanderNavCollapsed = true">Stats</a>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search Decks" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+
+
+     <ng-template #deckrt let-r="result" let-t="term">
+        <ngb-highlight [result]="r.commander + ' - ' + r.friendly_name" [term]="t"></ngb-highlight>
+      </ng-template>
+
+
+      <div class="mr-2 mr-auto w-50 d-inline-block">
+        <div class="input-group">
+          <input type="text" class="form-control bg-dark text-white" placeholder="Search Decks"
+                 [(ngModel)]="current_deck"
+                 [ngbTypeahead]="deck_search"
+                 [inputFormatter]="deck_formatter"
+                 [resultTemplate]="deckrt"
+                 [editable] = 'false'/>
+          <span class="input-group-append">
+            <button class="btn btn-outline-danger" type="submit" (click)="searchDeck()">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+
+        </div>
+      </div>
     </div>
   </div>
 </nav>
+
+<pre style="color: red">
+  {{ current_deck | json}}
+</pre>
+
 <router-outlet></router-outlet>

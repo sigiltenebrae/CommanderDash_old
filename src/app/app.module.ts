@@ -10,13 +10,15 @@ import {FormsModule} from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { DeckEditComponent } from './deck-edit/deck-edit.component';
 import { ThemeEditComponent } from './theme-edit/theme-edit.component';
+import { DeckMetricsComponent } from './deck-metrics/deck-metrics.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DeckViewerComponent,
     DeckEditComponent,
-    ThemeEditComponent
+    ThemeEditComponent,
+    DeckMetricsComponent
   ],
     imports: [
         BrowserModule,
@@ -24,7 +26,8 @@ import { ThemeEditComponent } from './theme-edit/theme-edit.component';
         RouterModule.forRoot([
           {path: '', component: DeckViewerComponent},
           {path: 'decks/:deckId', component: DeckEditComponent},
-          {path: 'themes', component:ThemeEditComponent}
+          {path: 'themes', component:ThemeEditComponent},
+          {path: 'metrics', component:DeckMetricsComponent}
         ]),
         NgbModule,
         FormsModule
