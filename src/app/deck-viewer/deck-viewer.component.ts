@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {ApiInterfaceService} from "../services/api-interface.service";
 import {NavbarDataService} from "../services/navbar-data.service";
 import * as Scry from "scryfall-sdk";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-deck-viewer',
@@ -11,10 +12,7 @@ import * as Scry from "scryfall-sdk";
 })
 export class DeckViewerComponent implements OnInit {
 
-  decks_url = 'http://localhost:3000/decks';
-  themes_url = 'http://localhost:3000/deckthemesname/';
-  decks: any = {} as any;
-  delete_themes: any = [];
+  decks: any = [];
   colors: any = {};
 
   constructor(private apiService:ApiInterfaceService, private navDataService: NavbarDataService) { }
@@ -43,11 +41,12 @@ export class DeckViewerComponent implements OnInit {
   }
 
   getDecks() {
-    return this.apiService.getApiDataFromServer(this.decks_url);
+    console.log(environment.decks_url);
+    return this.apiService.getApiDataFromServer(environment.decks_url);
   }
 
   getThemesForDeck(deck_id: number) {
-    return this.apiService.getApiDataFromServer(this.themes_url + deck_id);
+    return this.apiService.getApiDataFromServer(environment.deck_themes_url + deck_id);
   }
 
   async loadDeckScryfallInfo() {
@@ -59,14 +58,16 @@ export class DeckViewerComponent implements OnInit {
   }
 
   sortDecks(sort_type: string) {
-    if (sort_type === 'Commander') {
-      this.decks.sort((a, b) => (a.commander > b.commander) ? 1 : -1);
-    }
-    else if (sort_type === 'Deck Name') {
-      this.decks.sort((a, b) => (a.friendly_name > b.friendly_name) ? 1 : -1);
-    }
-    else if (sort_type === 'id') {
-      this.decks.sort((a, b) => (a.id > b.id) ? 1 : -1);
+    if (this.decks) {
+      if (sort_type === 'Commander') {
+        this.decks.sort((a, b) => (a.commander > b.commander) ? 1 : -1);
+      }
+      else if (sort_type === 'Deck Name') {
+        this.decks.sort((a, b) => (a.friendly_name > b.friendly_name) ? 1 : -1);
+      }
+      else if (sort_type === 'id') {
+        this.decks.sort((a, b) => (a.id > b.id) ? 1 : -1);
+      }
     }
   }
 }

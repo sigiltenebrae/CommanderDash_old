@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ApiInterfaceService} from "../services/api-interface.service";
 import {debounceTime, distinctUntilChanged, map, Observable, OperatorFunction, switchMap, tap} from "rxjs";
 import * as Scry from "scryfall-sdk";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-deck-edit',
@@ -15,9 +16,6 @@ export class DeckEditComponent implements OnInit {
 
   deck: any = null;
   deckId: any = null;
-  decks_url = 'http://localhost:3000/decks';
-  themes_url = 'http://localhost:3000/deckthemesname/';
-  all_themes_url = 'http://localhost:3000/themes';
   colors: any = {};
   images: any = {};
   all_themes: {id: number, name: string}[] = [];
@@ -63,6 +61,7 @@ export class DeckEditComponent implements OnInit {
           this.deck = response;
           this.deck.image_url_back = "";
           this.deck.commander_new = this.deck.commander;
+          this.loadDeckScryfallInfo().then(r => {});
           this.getThemesForDeck(this.deck.id).subscribe(
             (resp) => {
               this.deck.themes = resp;
@@ -85,6 +84,12 @@ export class DeckEditComponent implements OnInit {
       }
     );
     this.deleting = false;
+  }
+
+  async loadDeckScryfallInfo() {
+    let cur = await Scry.Cards.byName(this.deck.commander);
+    // @ts-ignore
+    this.colors[this.deck.commander] = cur.color_identity;
   }
 
   // @ts-ignore
@@ -123,7 +128,7 @@ export class DeckEditComponent implements OnInit {
   }
 
   getDeck() {
-    return this.apiService.getApiDataFromServer(this.decks_url + '/' + this.deckId);
+    return this.apiService.getApiDataFromServer(environment.decks_url + '/' + this.deckId);
   }
 
   async getImages() {
@@ -168,11 +173,11 @@ export class DeckEditComponent implements OnInit {
   }
 
   getThemesForDeck(deck_id: number) {
-    return this.apiService.getApiDataFromServer(this.themes_url + deck_id);
+    return this.apiService.getApiDataFromServer(environment.deck_themes_url + deck_id);
   }
 
   getAllThemes() {
-    return this.apiService.getApiDataFromServer(this.all_themes_url);
+    return this.apiService.getApiDataFromServer(environment.themes_url);
   }
 
   removeTheme(theme: any) {
@@ -201,7 +206,7 @@ export class DeckEditComponent implements OnInit {
   updateDeck() {
     if (!this.new_deck) {
       if (this.deck) {
-        this.apiService.putApiDataToServer(this.decks_url + "/" + this.deck.id, JSON.stringify(this.deck)).subscribe(
+        this.apiService.putApiDataToServer(environment.decks_url + "/" + this.deck.id, JSON.stringify(this.deck)).subscribe(
           (response) => {
             //this.router.navigate(['/']);
             this.loadPage();
@@ -215,7 +220,7 @@ export class DeckEditComponent implements OnInit {
     else {
       if (this.deck.commander && this.deck.commander !== "") {
         if (this.deck.friendly_name && this.deck.friendly_name !== "") {
-          this.apiService.postApiDataToServer(this.decks_url, JSON.stringify(this.deck)).subscribe(
+          this.apiService.postApiDataToServer(environment.decks_url, JSON.stringify(this.deck)).subscribe(
             (response) => {
               this.router.navigate(['/']);
             }, (error) => {
@@ -229,7 +234,7 @@ export class DeckEditComponent implements OnInit {
   deleteDeck() {
     if (this.deck) {
       if (this.deleting) {
-        this.apiService.deleteApiDataFromServer(this.decks_url + '/' + this.deck.id).subscribe(
+        this.apiService.deleteApiDataFromServer(environment.decks_url + '/' + this.deck.id).subscribe(
           (response) => {
             this.router.navigate(['/']);
           },

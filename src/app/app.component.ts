@@ -4,6 +4,7 @@ import {NavbarDataService} from "./services/navbar-data.service";
 import {debounceTime, map, Observable, OperatorFunction} from "rxjs";
 import * as Scry from "scryfall-sdk";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,6 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // @ts-ignore
-        console.log(this.router.url);
         if (this.router.url === '/') {
           this.current_component = 'decks';
         }

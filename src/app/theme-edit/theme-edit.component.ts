@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiInterfaceService} from "../services/api-interface.service";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-theme-edit',
@@ -8,7 +9,6 @@ import {ApiInterfaceService} from "../services/api-interface.service";
 })
 export class ThemeEditComponent implements OnInit {
 
-  all_themes_url = 'http://localhost:3000/themes';
   all_themes: {id: number, name: string}[] = [];
   delete_themes: any = [];
   temp_theme: any;
@@ -29,7 +29,7 @@ export class ThemeEditComponent implements OnInit {
   }
 
   getAllThemes() {
-    return this.apiService.getApiDataFromServer(this.all_themes_url);
+    return this.apiService.getApiDataFromServer(environment.themes_url);
   }
 
   createTheme() {
@@ -58,7 +58,7 @@ export class ThemeEditComponent implements OnInit {
     for (let theme of this.delete_themes) {
       if (theme.id > -1) {
         await new Promise<void> ((resolve) => {
-          this.apiService.deleteApiDataFromServer(this.all_themes_url + '/' + theme.id).subscribe((resp) => {
+          this.apiService.deleteApiDataFromServer(environment.themes_url + '/' + theme.id).subscribe((resp) => {
             resolve();
           }, error => {
             resolve();
@@ -69,7 +69,7 @@ export class ThemeEditComponent implements OnInit {
     for (let theme of this.all_themes) {
       if (theme.id < 0) {
         await new Promise<void> ((resolve) => {
-          this.apiService.postApiDataToServer(this.all_themes_url, JSON.stringify(theme)).subscribe((resp) => {
+          this.apiService.postApiDataToServer(environment.themes_url, JSON.stringify(theme)).subscribe((resp) => {
             resolve();
           }, error => {
             resolve();

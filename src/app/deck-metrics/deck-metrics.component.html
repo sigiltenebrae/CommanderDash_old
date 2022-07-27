@@ -1,8 +1,18 @@
-<div style="display: block;">
-  <canvas baseChart width="400" height="400"
-          [type]="'line'"
-          [data]="lineChartData"
-          [options]="lineChartOptions"
-          [legend]="lineChartLegend">
+<div *ngIf="buildRatingChartData">
+  <canvas baseChart
+          [data]="buildRatingChartData"
+          [options]="buildRatingChartOptions"
+          [plugins]="buildRatingChartPlugins"
+          [legend]="buildRatingChartLegend"
+          [type]="'bar'">
+  </canvas>
+</div>
+<div *ngIf="deckStatsChartDatasets">
+  <canvas baseChart
+          [labels]="deckStatsChartLabels"
+          [datasets]="deckStatsChartDatasets"
+          [options]="deckStatsChartOptions"
+          [legend]="true"
+          [type]="'doughnut'">
   </canvas>
 </div>

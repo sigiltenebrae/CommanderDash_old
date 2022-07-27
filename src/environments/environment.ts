@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  decks_url: 'http://localhost:3000/decks',
+  deck_themes_url: 'http://localhost:3000/deckthemesname/',
+  themes_url: 'http://localhost:3000/themes'
 };
 
 /*

@@ -61,6 +61,18 @@ label {
   height: 75px;
 }
 
+.deck-edit-preview .mtg-logo {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 80px;
+  height: 100%;
+}
+
+.deck-edit-preview .mtg-logo {
+  filter: drop-shadow(0 0 0.2rem white);
+}
+
 .deck-edit-preview .card-star-build {
   position: absolute;
   bottom: 10px;
