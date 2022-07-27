@@ -14,18 +14,44 @@ export class DeckMetricsComponent implements OnInit {
 
   decks: any = [];
   colors: any = {};
+  theme_counts: any = {};
 
   public buildRatingChartData: ChartConfiguration<'bar'>['data'];
   public buildRatingChartLegend = true;
   public buildRatingChartPlugins = [];
   public buildRatingChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: false,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Custom title'
+      }
+    }
   };
 
   public deckStatsChartLabels: string[] = [ 'W', 'U', 'B', 'R', 'G' ];
   public deckStatsChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'];
   public deckStatsChartOptions: ChartConfiguration<'doughnut'>['options'] = {
-    responsive: false
+    responsive: false,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Deck Color Percentages'
+      }
+    }
+  };
+
+  public themeCountData: ChartConfiguration<'bar'>['data'];
+  public themeCountPlugins = [];
+  public themeCountOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: false,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Theme Counts'
+      }
+    },
+    indexAxis: 'y'
   };
 
   constructor(private apiService:ApiInterfaceService, private navDataService: NavbarDataService) {
@@ -43,12 +69,20 @@ export class DeckMetricsComponent implements OnInit {
           this.getThemesForDeck(deck.id).subscribe(
             (resp) => {
               deck.themes = resp;
-              deck.deleteThemes = [];
+              for (let theme of deck.themes) {
+                if (this.theme_counts[theme.name] != null) {
+                  this.theme_counts[theme.name] ++;
+                }
+                else {
+                  this.theme_counts[theme.name] = 1;
+                }
+              }
             });
         }
         this.loadDeckScryfallInfo().then(r => {
           this.loadRatingData();
           this.loadDeckStats();
+          this.loadThemeCounts();
         });
       }
     );
@@ -92,9 +126,17 @@ export class DeckMetricsComponent implements OnInit {
         total++;
       }
     }
-    this.deckStatsChartDatasets = [
-      { data: [ w/total, u/total, b/total, r/total, g/total ], label: 'Series A' },
-    ];
+    this.deckStatsChartDatasets = [{
+      data: [ w/total, u/total, b/total, r/total, g/total ],
+      backgroundColor: [
+      'rgba(100%,80.076599%,39.988708%, 0.7)',
+      'rgba(10.984802%,56.834412%,78.90625%, 0.7)',
+      'rgba(30, 30, 30, 0.7)',
+      'rgba(100%,39.988708%,0%, 0.7)',
+      'rgba(10.984802%,78.90625%,25.097656%, 0.7)'
+    ],
+      label: 'Series A'
+    }];
   }
 
   loadRatingData() {
@@ -134,11 +176,54 @@ export class DeckMetricsComponent implements OnInit {
     this.buildRatingChartData = {
       labels: [ 'W', 'U', 'B', 'R', 'G' ],
       datasets: [
-        { data: [ w_build / w, u_build / u, b_build / b, r_build / r, g_build / g ], label: 'Fun to Build' },
-        { data: [ w_play / w, u_play / u, b_play / b, r_play / r, g_play / g ], label: 'Fun to Play' }
+        {
+          data: [ w_build / w, u_build / u, b_build / b, r_build / r, g_build / g ],
+          backgroundColor: [
+            'rgba(100%,80.076599%,39.988708%, 0.7)',
+            'rgba(10.984802%,56.834412%,78.90625%, 0.7)',
+            'rgba(30, 30, 30, 0.7)',
+            'rgba(100%,39.988708%,0%, 0.7)',
+            'rgba(10.984802%,78.90625%,25.097656%, 0.7)'
+          ],
+          label: 'Fun to Build'
+        },
+        {
+          data: [ w_play / w, u_play / u, b_play / b, r_play / r, g_play / g ],
+          backgroundColor: [
+            'white',
+            'blue',
+            'black',
+            'red',
+            'green'
+          ],
+          label: 'Fun to Play' }
       ]
     };
 
   }
 
+  loadThemeCounts() {
+    let themeArray: {name: string, count: number}[] = [];
+    for (let theme_name of Object.keys(this.theme_counts)) {
+      themeArray.push( {name: theme_name, count:this.theme_counts[theme_name]} )
+    }
+    themeArray.sort((a, b) => (b.count > a.count) ? 1 : -1)
+    themeArray = themeArray.slice(0, 10);
+    console.log(themeArray);
+    let theme_labels: string[] = [];
+    let theme_counted: number[] = [];
+    for(let theme of themeArray) {
+      theme_labels.push(theme.name);
+      theme_counted.push(theme.count);
+    }
+    this.themeCountData = {
+        labels: theme_labels,
+        datasets: [
+          {
+            data: theme_counted,
+            label: 'Themes'
+          }
+        ]
+      };
+  }
 }
