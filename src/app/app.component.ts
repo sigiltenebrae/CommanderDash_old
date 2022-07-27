@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiInterfaceService} from "./services/api-interface.service";
+import {NavbarDataService} from "./services/navbar-data.service";
 import {debounceTime, map, Observable, OperatorFunction} from "rxjs";
 import * as Scry from "scryfall-sdk";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -16,10 +18,11 @@ export class AppComponent implements OnInit {
   public current_deck: any;
   all_decks: any[] = [];
   deck_colors: any = {};
+  current_component = "";
 
   public commanderNavCollapsed = true;
 
-  constructor(private apiService:ApiInterfaceService) {
+  constructor(private router: Router, private route: ActivatedRoute, private apiService:ApiInterfaceService, private navDataService: NavbarDataService) {
   }
 
   ngOnInit(): void {
@@ -34,6 +37,24 @@ export class AppComponent implements OnInit {
         this.loadDeckScryfallInfo().then(r => {});
       }
     );
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // @ts-ignore
+        console.log(this.router.url);
+        if (this.router.url === '/') {
+          this.current_component = 'decks';
+        }
+        else if (this.router.url.match('decks\/\d*')) {
+          let deck_id = this.router.url.substring(7);
+          if(Number(deck_id) > -1) {
+            this.current_component = 'deck_edit'
+          }
+          else {
+            this.current_component = 'new_deck'
+          }
+        }
+      }
+    });
   }
 
   getAllDecks() {
@@ -58,6 +79,12 @@ export class AppComponent implements OnInit {
   deck_formatter = (x: any) => String(x.friendly_name + ' - ' + x.commander);
 
   searchDeck() {
-    return;
+    if (this.current_deck) {
+      this.router.navigate(['/decks', this.current_deck.id]);
+    }
+  }
+
+  deckViewerChangeSort(sort_type: string) {
+    this.navDataService.updateSort(sort_type);
   }
 }

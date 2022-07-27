@@ -38,7 +38,6 @@ export class DeckEditComponent implements OnInit {
       this.new_deck = false;
     }
     else {
-      console.log('new deck');
       this.new_deck = true;
       this.deck = {};
       this.deck.commander = "";
@@ -52,7 +51,6 @@ export class DeckEditComponent implements OnInit {
       this.deck.themes = [];
       this.deck.deleteThemes = [];
       this.deck.active = true;
-      console.log(this.deck);
     }
     this.loadPage();
   }
@@ -87,7 +85,6 @@ export class DeckEditComponent implements OnInit {
       }
     );
     this.deleting = false;
-    console.log(this.deck);
   }
 
   // @ts-ignore

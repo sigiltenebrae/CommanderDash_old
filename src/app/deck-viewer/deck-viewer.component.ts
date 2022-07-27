@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {ApiInterfaceService} from "../services/api-interface.service";
+import {NavbarDataService} from "../services/navbar-data.service";
 import * as Scry from "scryfall-sdk";
-import {NgbOffcanvas} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-deck-viewer',
@@ -17,10 +17,13 @@ export class DeckViewerComponent implements OnInit {
   delete_themes: any = [];
   colors: any = {};
 
-  constructor(private apiService:ApiInterfaceService, private offcanvas: NgbOffcanvas) { }
+  constructor(private apiService:ApiInterfaceService, private navDataService: NavbarDataService) { }
 
   ngOnInit(): void {
     this.loadPage();
+    this.navDataService.sharedDeckSort.subscribe(sort_type => {
+      this.sortDecks(sort_type);
+    })
   }
 
   loadPage() {
@@ -52,6 +55,18 @@ export class DeckViewerComponent implements OnInit {
       let cur = await Scry.Cards.byName(deck.commander);
       // @ts-ignore
       this.colors[deck.commander] = cur.color_identity;
+    }
+  }
+
+  sortDecks(sort_type: string) {
+    if (sort_type === 'Commander') {
+      this.decks.sort((a, b) => (a.commander > b.commander) ? 1 : -1);
+    }
+    else if (sort_type === 'Deck Name') {
+      this.decks.sort((a, b) => (a.friendly_name > b.friendly_name) ? 1 : -1);
+    }
+    else if (sort_type === 'id') {
+      this.decks.sort((a, b) => (a.id > b.id) ? 1 : -1);
     }
   }
 }

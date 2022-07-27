@@ -19,6 +19,17 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/metrics']" (click)="commanderNavCollapsed = true">Stats</a>
         </li>
+        <li *ngIf="current_component === 'decks';" class="nav-item" ngbDropdown>
+
+          <a class="nav-link" tabindex="0" ngbDropdownToggle id="deckSortDropdown" role="button">
+            Sort Decks
+          </a>
+          <div ngbDropdownMenu aria-labelledby="deckSortDropdown" class="dropdown-menu">
+            <a ngbDropdownItem href="#" (click)="deckViewerChangeSort('Deck Name')">Deck Name</a>
+            <a ngbDropdownItem href="#" (click)="deckViewerChangeSort('Commander')">Commander</a>
+            <a ngbDropdownItem href="#" (click)="deckViewerChangeSort('id')">ID</a>
+          </div>
+        </li>
       </ul>
 
 
@@ -73,9 +84,5 @@
     </div>
   </div>
 </nav>
-
-<pre style="color: red">
-  {{ current_deck | json}}
-</pre>
 
 <router-outlet></router-outlet>
