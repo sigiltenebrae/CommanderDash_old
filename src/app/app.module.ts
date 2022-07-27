@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 
-import {RouterModule} from "@angular/router";
+import { RouterModule } from "@angular/router";
 import { DeckViewerComponent } from './deck-viewer/deck-viewer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {FormsModule} from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import { NgChartsModule } from "ng2-charts";
+
 import { DeckEditComponent } from './deck-edit/deck-edit.component';
 import { ThemeEditComponent } from './theme-edit/theme-edit.component';
 import { DeckMetricsComponent } from './deck-metrics/deck-metrics.component';
@@ -30,7 +32,8 @@ import { DeckMetricsComponent } from './deck-metrics/deck-metrics.component';
           {path: 'metrics', component:DeckMetricsComponent}
         ]),
         NgbModule,
-        FormsModule
+        FormsModule,
+        NgChartsModule
     ],
   providers: [],
   bootstrap: [AppComponent]

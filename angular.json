@@ -105,5 +105,8 @@
       }
     }
   },
-  "defaultProject": "CommanderDash"
+  "defaultProject": "CommanderDash",
+  "cli": {
+    "analytics": false
+  }
 }

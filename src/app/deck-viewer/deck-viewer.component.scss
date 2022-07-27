@@ -32,11 +32,6 @@
   opacity: 0.5;
 }
 
-.deck-preview:hover .card-star-build, .deck-preview:hover .card-star-play, .deck-preview:hover .card-star-win,
-.deck-preview:hover .deck-themes {
-  opacity: 0.5;
-}
-
 .deck-preview .edit-button {
   position: absolute;
   display: none;
@@ -78,8 +73,12 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 75px;
-  height: 75px;
+  width: 80px;
+  height: 100%;
+}
+
+.mtg-logo {
+  filter: drop-shadow(0 0 0.2rem white);
 }
 
 .deck-preview .card-star-build {
@@ -115,22 +114,33 @@
   stroke-opacity:1;
   stop-color:#000000;
   stop-opacity:1;
-  stroke: white;
+  stroke: black;
 }
+
+.deck-preview .card-star-outline path{
+  stroke: black !important;
+  filter: drop-shadow(0 0 0.5rem white);
+}
+
 .deck-preview .card-star-white {
-  fill:rgb(100%,80.076599%,39.988708%);
+  //fill:rgb(100%,80.076599%,39.988708%);
+  fill: maroon;
 }
 .deck-preview .card-star-blue {
-  fill:rgb(10.984802%,56.834412%,78.90625%);
+  //fill:rgb(10.984802%,56.834412%,78.90625%);
+  fill: maroon;
 }
 .deck-preview .card-star-black {
-  fill:rgb(65.818787%,63.867188%,59.959412%);
+  //fill:rgb(65.818787%,63.867188%,59.959412%);
+  fill: maroon;
 }
 .deck-preview .card-star-red {
-  fill:rgb(100%,39.988708%,0%);
+  //fill:rgb(100%,39.988708%,0%);
+  fill: maroon;
 }
 .deck-preview .card-star-green {
-  fill:rgb(10.984802%,78.90625%,25.097656%);
+  //fill:rgb(10.984802%,78.90625%,25.097656%);
+  fill: maroon;
 }
 
 .deck-preview .commander-name {
@@ -143,6 +153,10 @@
   text-shadow: 0 0 5px black;
   text-decoration: underline;
   font-size: 1.25em;
+}
+
+.deck-preview .commander-name:hover {
+  filter: drop-shadow(0 0 0.5rem maroon);
 }
 
 .deck-preview .deck-title {
@@ -168,22 +182,22 @@
 
 .card-star-tooltip .tooltip-inner{
   opacity: 1;
-  background-color: rgb(8, 22, 46);
+  background-color: maroon;
   max-width: 150px;
 }
 .card-star-tooltip.bs-tooltip-end .tooltip-arrow::before {
   opacity: 1;
-  border-right-color: rgb(8, 22, 46);
+  border-right-color: maroon;
 }
 .card-star-tooltip.bs-tooltip-start .tooltip-arrow::before {
   opacity: 1;
-  border-left-color: rgb(8, 22, 46);
+  border-left-color: maroon;
 }
 .card-star-tooltip.bs-tooltip-top .tooltip-arrow::before {
   opacity: 1;
-  border-top-color: rgb(8, 22, 46);
+  border-top-color: maroon;
 }
 .card-star-tooltip.bs-tooltip-bottom .tooltip-arrow::before {
   opacity: 1;
-  border-bottom-color: rgb(8, 22, 46);
+  border-bottom-color: maroon;
 }

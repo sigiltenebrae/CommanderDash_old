@@ -46,19 +46,30 @@ body {
   background-color: #303641;
 }
 
-.dropdown-item{
+.dropdown-item {
   color: white;
 }
 
-.btn-outline-danger
-
-{
-  color:crimson;
-  border-color: crimson;
+.btn-outline-danger {
+  color:maroon;
+  border-color: maroon;
 }
 
 .btn-outline-danger:hover, .btn-outline-danger:focus, .btn-outline-danger:active, .btn-outline-danger.active, .open .dropdown-toggle.btn-outline-danger {
-  background-color: crimson;
+  background-color: maroon;
   color: white;
-  border-color: crimson;
+  border-color: maroon;
+}
+
+.btn-outline-danger:focus .btn-outline-danger:active, .btn-outline-danger.active {
+  box-shadow: 0 0 0 5px rgba(maroon, .4);
+}
+
+.outline-danger {
+  border-color: maroon;
+}
+
+.outline-danger:focus {
+  border-color: maroon;
+  box-shadow: 0 0 0 5px rgba(maroon, .4);
 }

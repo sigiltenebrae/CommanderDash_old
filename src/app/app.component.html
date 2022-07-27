@@ -67,12 +67,13 @@
 
       <div class="mr-2 mr-auto w-50 d-inline-block">
         <div class="input-group">
-          <input type="text" class="form-control bg-dark text-white" placeholder="Search Decks"
+          <input type="text" class="form-control outline-danger bg-dark" placeholder="Search Decks"
                  [(ngModel)]="current_deck"
                  [ngbTypeahead]="deck_search"
                  [inputFormatter]="deck_formatter"
                  [resultTemplate]="deckrt"
-                 [editable] = 'false'/>
+                 [editable] = 'false'
+                  (keyup.enter)="searchDeck()"/>
           <span class="input-group-append">
             <button class="btn btn-outline-danger" type="submit" (click)="searchDeck()">
               <i class="fa fa-search"></i>
