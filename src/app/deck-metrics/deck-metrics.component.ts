@@ -23,8 +23,27 @@ export class DeckMetricsComponent implements OnInit {
     responsive: false,
     plugins: {
       title: {
-        display: true,
-        text: 'Custom title'
+        display: false,
+        text: 'Custom title',
+        color: 'maroon'
+      },
+      legend: {
+        labels: {
+          color: 'maroon'
+        }
+      },
+
+    },
+    scales: {
+      y: {
+        ticks: {
+          color: 'maroon'
+        }
+      },
+      x: {
+        ticks: {
+          color: 'maroon'
+        }
       }
     }
   };
@@ -36,7 +55,8 @@ export class DeckMetricsComponent implements OnInit {
     plugins: {
       title: {
         display: true,
-        text: 'Deck Color Percentages'
+        text: 'Deck Color Percentages',
+        color: 'maroon'
       }
     }
   };
@@ -48,7 +68,8 @@ export class DeckMetricsComponent implements OnInit {
     plugins: {
       title: {
         display: true,
-        text: 'Theme Counts'
+        text: 'Theme Counts',
+        color: 'maroon'
       }
     },
     indexAxis: 'y'
@@ -129,12 +150,34 @@ export class DeckMetricsComponent implements OnInit {
     this.deckStatsChartDatasets = [{
       data: [ w/total, u/total, b/total, r/total, g/total ],
       backgroundColor: [
-      'rgba(100%,80.076599%,39.988708%, 0.7)',
-      'rgba(10.984802%,56.834412%,78.90625%, 0.7)',
-      'rgba(30, 30, 30, 0.7)',
-      'rgba(100%,39.988708%,0%, 0.7)',
-      'rgba(10.984802%,78.90625%,25.097656%, 0.7)'
-    ],
+        'rgba(201, 203, 207, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(30, 30, 30, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(75, 192, 192, 0.2)'
+      ],
+      borderColor: [
+        'rgb(201, 203, 207)',
+        'rgb(54, 162, 235)',
+        'black',
+        'rgb(255, 159, 64)',
+        'rgb(75, 192, 192)'
+      ],
+      hoverBackgroundColor: [
+        'rgb(201, 203, 207)',
+        'rgb(54, 162, 235)',
+        'black',
+        'rgb(255, 159, 64)',
+        'rgb(75, 192, 192)'
+      ],
+      hoverBorderColor: [
+        'rgb(201, 203, 207)',
+        'rgb(54, 162, 235)',
+        'black',
+        'rgb(255, 159, 64)',
+        'rgb(75, 192, 192)'
+      ],
+      borderWidth: 1,
       label: 'Series A'
     }];
   }
@@ -179,23 +222,67 @@ export class DeckMetricsComponent implements OnInit {
         {
           data: [ w_build / w, u_build / u, b_build / b, r_build / r, g_build / g ],
           backgroundColor: [
-            'rgba(100%,80.076599%,39.988708%, 0.7)',
-            'rgba(10.984802%,56.834412%,78.90625%, 0.7)',
-            'rgba(30, 30, 30, 0.7)',
-            'rgba(100%,39.988708%,0%, 0.7)',
-            'rgba(10.984802%,78.90625%,25.097656%, 0.7)'
+            'rgba(201, 203, 207, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(30, 30, 30, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(75, 192, 192, 0.2)'
           ],
-          label: 'Fun to Build'
+          borderColor: [
+            'rgb(201, 203, 207)',
+            'rgb(54, 162, 235)',
+            'black',
+            'rgb(255, 159, 64)',
+            'rgb(75, 192, 192)'
+          ],
+          hoverBackgroundColor: [
+            'rgb(201, 203, 207)',
+            'rgb(54, 162, 235)',
+            'black',
+            'rgb(255, 159, 64)',
+            'rgb(75, 192, 192)'
+          ],
+          hoverBorderColor: [
+            'rgb(201, 203, 207)',
+            'rgb(54, 162, 235)',
+            'black',
+            'rgb(255, 159, 64)',
+            'rgb(75, 192, 192)'
+          ],
+          borderWidth: 1,
+          label: 'Fun to Build',
         },
         {
           data: [ w_play / w, u_play / u, b_play / b, r_play / r, g_play / g ],
           backgroundColor: [
+            'rgba(255, 255, 255, 0.2)',
+            'rgba(0, 0, 255, 0.2)',
+            'rgba(0, 0, 0, 0.2)',
+            'rgba(255, 0, 0, 0.2)',
+            'rgba(0, 255, 0, 0.2)'
+          ],
+          borderColor: [
             'white',
             'blue',
             'black',
             'red',
             'green'
           ],
+          hoverBackgroundColor: [
+            'white',
+            'blue',
+            'black',
+            'red',
+            'green'
+          ],
+          hoverBorderColor: [
+            'white',
+            'blue',
+            'black',
+            'red',
+            'green'
+          ],
+          borderWidth: 1,
           label: 'Fun to Play' }
       ]
     };
@@ -209,7 +296,6 @@ export class DeckMetricsComponent implements OnInit {
     }
     themeArray.sort((a, b) => (b.count > a.count) ? 1 : -1)
     themeArray = themeArray.slice(0, 10);
-    console.log(themeArray);
     let theme_labels: string[] = [];
     let theme_counted: number[] = [];
     for(let theme of themeArray) {
@@ -221,7 +307,22 @@ export class DeckMetricsComponent implements OnInit {
         datasets: [
           {
             data: theme_counted,
-            label: 'Themes'
+            label: 'Themes',
+            backgroundColor: [
+              'rgba(201, 203, 207, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(30, 30, 30, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(75, 192, 192, 0.2)'
+            ],
+            borderColor: [
+              'rgb(201, 203, 207)',
+              'rgb(54, 162, 235)',
+              'black',
+              'rgb(255, 159, 64)',
+              'rgb(75, 192, 192)'
+            ],
+            borderWidth: 1
           }
         ]
       };

@@ -19,6 +19,9 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/metrics']" (click)="commanderNavCollapsed = true">Stats</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/recommendations']" (click)="commanderNavCollapsed = true">Recs</a>
+        </li>
         <li *ngIf="current_component === 'decks';" class="nav-item" ngbDropdown>
 
           <a class="nav-link" tabindex="0" ngbDropdownToggle id="deckSortDropdown" role="button">

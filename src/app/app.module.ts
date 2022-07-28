@@ -13,6 +13,7 @@ import { NgChartsModule } from "ng2-charts";
 import { DeckEditComponent } from './deck-edit/deck-edit.component';
 import { ThemeEditComponent } from './theme-edit/theme-edit.component';
 import { DeckMetricsComponent } from './deck-metrics/deck-metrics.component';
+import { ArchidektRecsComponent } from './archidekt-recs/archidekt-recs.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { DeckMetricsComponent } from './deck-metrics/deck-metrics.component';
     DeckViewerComponent,
     DeckEditComponent,
     ThemeEditComponent,
-    DeckMetricsComponent
+    DeckMetricsComponent,
+    ArchidektRecsComponent
   ],
     imports: [
         BrowserModule,
@@ -30,7 +32,8 @@ import { DeckMetricsComponent } from './deck-metrics/deck-metrics.component';
           {path: '', component: DeckViewerComponent},
           {path: 'decks/:deckId', component: DeckEditComponent},
           {path: 'themes', component:ThemeEditComponent},
-          {path: 'metrics', component:DeckMetricsComponent}
+          {path: 'metrics', component:DeckMetricsComponent},
+          {path: 'recommendations', component:ArchidektRecsComponent}
         ]),
         NgbModule,
         FormsModule,
