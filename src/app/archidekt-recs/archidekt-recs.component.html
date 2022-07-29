@@ -1,1 +1,17 @@
-<button (click)="GetRecommendation()">Lets Do This!</button>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-4">
+      <button (click)="getRecommendation()">Lets Do This!</button>
+      <pre style="color: red">{{recs | json}}</pre>
+    </div>
+    <div class="col-4">
+      <h2 style="color: limegreen">Commander: {{commander_position}} of {{commander_total}} - {{current_commander}}</h2>
+      <h2 style="color: limegreen">User: {{top_deck_position}} of {{top_deck_total}}</h2>
+      <h2 style="color: limegreen">Deck: {{user_deck_position}} of {{user_deck_total}}</h2>
+      <h2 style="color: limegreen">Card: {{card_position}} of {{card_total}}</h2>
+      <pre style="color:aqua">{{sorted_recs | json}}</pre>
+    </div>
+  </div>
+</div>
+
+

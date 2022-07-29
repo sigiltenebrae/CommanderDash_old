@@ -41,7 +41,6 @@ export class DeckViewerComponent implements OnInit {
   }
 
   getDecks() {
-    console.log(environment.decks_url);
     return this.apiService.getApiDataFromServer(environment.decks_url);
   }
 
