@@ -1,21 +1,67 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-3">
-      <button (click)="getRecommendation()">Lets Do This!</button>
-      <pre style="color: red">{{recs | json}}</pre>
-    </div>
-    <div class="col-3">
-      <h2 style="color: limegreen">Commander: {{commander_position}} of {{commander_total}} - {{current_commander}}</h2>
-      <h2 style="color: limegreen">User: {{top_deck_position}} of {{top_deck_total}}</h2>
-      <h2 style="color: limegreen">Deck: {{user_deck_position}} of {{user_deck_total}}</h2>
-      <h2 style="color: limegreen">Card: {{card_position}} of {{card_total}}</h2>
-      <pre style="color:aqua">{{sorted_recs | json}}</pre>
-    </div>
-    <div class="col-3">
-      <pre style="color: magenta">{{colors | json}}</pre>
-    </div>
-    <div class="col-3">
-      <pre style="color: gold">{{color_modifiers | json}}</pre>
+  <div class="row justify-content-center">
+    <div class="col-auto" style="margin: 20px">
+      <div *ngIf="!calculating && !calculated" class="row justify-content-center" style="text-align: center">
+        <div style="background-color: rgba(150, 150, 150, 0.5); padding: 30px; border-radius: 10px; max-width: 500px" class="centered">
+          <p style="color:red;">Chaos:
+            <mat-slider
+              class="example-margin"
+              [disabled]="false"
+              [invert]="false"
+              [max]="100"
+              [min]="0"
+              [step]="1"
+              [(ngModel)]="randomness"
+              [vertical]="false"
+              aria-labelledby="example-name-label">
+            </mat-slider>
+          </p>
+          <button (click)="getRecommendation()" class="btn btn-danger" style="max-width: 200px">Lets Do This!</button>
+        </div>
+
+      </div>
+      <div *ngIf="calculating" style="width: 275px;">
+        <div *ngIf="current_deck" >
+          <img src="{{current_deck.image_url}}" alt="{{current_commander}}" style="height: 384px;">
+        </div>
+        <br>
+        <p style="color:aqua">Commanders: <ngb-progressbar type="info" [striped]="true" [animated]="true"
+                            [value]="(commander_position/commander_total) * 100"></ngb-progressbar></p>
+        <p style="color:aqua">Users: <ngb-progressbar type="warning" [striped]="true" [animated]="true" [value]="(top_deck_position/top_deck_total) * 100"></ngb-progressbar></p>
+        <p style="color:aqua">Decks<ngb-progressbar type="danger" [striped]="true" [animated]="true" [value]="(user_deck_position/user_deck_total) * 100"></ngb-progressbar></p>
+        <p style="color:aqua">Elapsed Time: {{secondsToString(calc_clock)}}</p>
+      </div>
+      <div *ngIf="final_decks.length > 0" class="container-fluid">
+        <div class="row justify-content-center">
+          <h2 style="color: aqua; text-align: center">Your Recommendations:</h2>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-auto" *ngFor="let deck of final_decks">
+
+            <div class="container">
+                <div class="row">
+                  <img src="{{deck.image_url}}" alt="{{deck.commander}}" style="width: 275px; height: 384px;">
+                </div>
+                <br>
+                <div class="row" *ngIf="deck.themes">
+<!--                  <p *ngFor="let th of deck.themes" style="color: magenta">{{th}}</p>-->
+                  <p style="color: magenta">Random Theme: </p>
+                  <p style="color: magenta">{{deck.random_theme}}</p>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center" style="text-align: center">
+          <p style="color:aqua">Elapsed Time: {{secondsToString(calc_clock)}}</p>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <button class="btn btn-danger" (click)="restart_Recs()">
+              Restart
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

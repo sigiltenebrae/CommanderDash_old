@@ -44,6 +44,7 @@ export class ThemeEditComponent implements OnInit {
       this.all_themes.push(temp_new_theme);
       this.temp_theme = "";
     }
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   deleteTheme(theme: any) {

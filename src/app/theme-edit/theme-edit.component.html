@@ -28,7 +28,7 @@
               </div>
               <div class="col-6">
                 <div class="input-group mb-2">
-                  <input type="text" class="form-control text-white bg-dark" [(ngModel)]="temp_theme">
+                  <input type="text" class="form-control text-white bg-dark" [(ngModel)]="temp_theme" (keyup.enter)="createTheme()">
                   <span class="input-group-append">
                     <button class="btn btn-outline-light" type="button" (click)="createTheme()">
                       <i class="fa fa-plus"></i>

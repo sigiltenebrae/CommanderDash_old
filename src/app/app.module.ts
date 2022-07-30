@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppComponent } from './app.component';
 
@@ -14,6 +15,7 @@ import { DeckEditComponent } from './deck-edit/deck-edit.component';
 import { ThemeEditComponent } from './theme-edit/theme-edit.component';
 import { DeckMetricsComponent } from './deck-metrics/deck-metrics.component';
 import { ArchidektRecsComponent } from './archidekt-recs/archidekt-recs.component';
+import { MatSliderModule } from "@angular/material/slider";
 
 
 @NgModule({
@@ -25,20 +27,22 @@ import { ArchidektRecsComponent } from './archidekt-recs/archidekt-recs.componen
     DeckMetricsComponent,
     ArchidektRecsComponent
   ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        RouterModule.forRoot([
-          {path: '', component: DeckViewerComponent},
-          {path: 'decks/:deckId', component: DeckEditComponent},
-          {path: 'themes', component:ThemeEditComponent},
-          {path: 'metrics', component:DeckMetricsComponent},
-          {path: 'recommendations', component:ArchidektRecsComponent}
-        ]),
-        NgbModule,
-        FormsModule,
-        NgChartsModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    RouterModule.forRoot([
+      {path: '', component: DeckViewerComponent},
+      {path: 'decks/:deckId', component: DeckEditComponent},
+      {path: 'themes', component: ThemeEditComponent},
+      {path: 'metrics', component: DeckMetricsComponent},
+      {path: 'recommendations', component: ArchidektRecsComponent}
+    ]),
+    NgbModule,
+    FormsModule,
+    NgChartsModule,
+    MatSliderModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
