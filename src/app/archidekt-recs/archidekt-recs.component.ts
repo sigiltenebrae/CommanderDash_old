@@ -20,7 +20,9 @@ export class ArchidektRecsComponent implements OnInit {
   calc_clock;
   calc_clock_subscribe;
   subject;
-  randomness = 75;
+  user_randomness = 75;
+  color_randomness = 75;
+  theme_randomness = 75;
 
   recs: any = {};
   colors: any = {};
@@ -50,7 +52,7 @@ export class ArchidektRecsComponent implements OnInit {
   assignThemeWeights(themes: string[]) {
     let weighted_themes = {};
     let x_coeff = 0;
-    let factor = (1 - ((this.randomness) / 100));
+    let factor = (1 - ((this.theme_randomness) / 100));
     for (let i = 0; i < themes.length; i++) {
       x_coeff += Math.pow(factor, i);
     }
@@ -273,7 +275,6 @@ export class ArchidektRecsComponent implements OnInit {
                   let edhrec_data: any = com;
                   final_deck.themes = edhrec_data.themes;
                   final_deck.random_theme = this.pickRandomTheme(final_deck.themes);
-                  console.log(this.colors);
                   final_deck.random_subtheme = this.pickRandomTheme(this.getThemesFromSortedColors(this.getSortedColors(this.colors[final_deck.commander])));
                   res()
                 }, (e) => {
@@ -345,8 +346,8 @@ export class ArchidektRecsComponent implements OnInit {
         this.getTopDecksForCommander(commander).subscribe(
           async (response) => {
             let top_decks: any = response;
-            if (top_decks.results.length > (100 - this.randomness)) {
-              this.top_deck_total = (100 - this.randomness);
+            if (top_decks.results.length > (100 - this.user_randomness)) {
+              this.top_deck_total = (100 - this.user_randomness);
               if (this.top_deck_total == 0) {
                 this.top_deck_total = 1;
               }
@@ -504,7 +505,8 @@ export class ArchidektRecsComponent implements OnInit {
                 {
                   this.colors[deck.cmdr] = cur.color_identity;
                   for (let col of cur.color_identity) {
-                    deck.count *= this.color_modifiers[col];
+                    deck.count *=
+                      Math.pow(this.color_modifiers[col], (1 - (this.color_randomness / 100)));
                   }
                   resolve();
                 }

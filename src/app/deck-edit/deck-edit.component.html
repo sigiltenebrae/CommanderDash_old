@@ -416,7 +416,8 @@
                         <div class="col-6">
                           <div class="input-group mb-2">
                             <input type="text" class="form-control bg-dark text-white"
-                                   [(ngModel)]="temp_theme" [ngbTypeahead]="theme_search" [inputFormatter]="theme_formatter" [resultTemplate]="themert">
+                                   [(ngModel)]="temp_theme" [ngbTypeahead]="theme_search" [inputFormatter]="theme_formatter" [resultTemplate]="themert"
+                                   (keyup.enter)="addTheme()">
                             <span class="input-group-append">
                       <button class="btn btn-outline-light" type="button" (click)="addTheme()"><i class="fa fa-plus"></i></button>
                     </span>

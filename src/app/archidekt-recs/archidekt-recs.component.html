@@ -3,7 +3,8 @@
     <div class="col-auto" style="margin: 20px">
       <div *ngIf="!calculating && !calculated" class="row justify-content-center" style="text-align: center">
         <div style="background-color: rgba(150, 150, 150, 0.5); padding: 30px; border-radius: 10px; max-width: 500px" class="centered">
-          <p style="color:red;">Chaos:
+          <p style="color: red">Chaos</p>
+          <p style="color:red;">User:
             <mat-slider
               class="example-margin"
               [disabled]="false"
@@ -11,7 +12,33 @@
               [max]="100"
               [min]="0"
               [step]="1"
-              [(ngModel)]="randomness"
+              [(ngModel)]="user_randomness"
+              [vertical]="false"
+              aria-labelledby="example-name-label">
+            </mat-slider>
+          </p>
+          <p style="color:red;">Color:
+            <mat-slider
+              class="example-margin"
+              [disabled]="false"
+              [invert]="false"
+              [max]="100"
+              [min]="0"
+              [step]="1"
+              [(ngModel)]="color_randomness"
+              [vertical]="false"
+              aria-labelledby="example-name-label">
+            </mat-slider>
+          </p>
+          <p style="color:red;">Theme:
+            <mat-slider
+              class="example-margin"
+              [disabled]="false"
+              [invert]="false"
+              [max]="100"
+              [min]="0"
+              [step]="1"
+              [(ngModel)]="theme_randomness"
               [vertical]="false"
               aria-labelledby="example-name-label">
             </mat-slider>
