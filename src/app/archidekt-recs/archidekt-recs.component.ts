@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiInterfaceService} from "../services/api-interface.service";
-import {environment} from "../../environments/environment";
-import * as Scry from "scryfall-sdk";
 import {Subject, takeUntil, timer} from 'rxjs';
+import {ApiInterfaceService} from "../services/api-interface.service";
+
+import { environment } from "../../environments/environment";
+import { subthemes } from "../subthemes";
+
+import * as Scry from "scryfall-sdk";
+
 
 @Component({
   selector: 'app-archidekt-recs',
@@ -17,7 +21,6 @@ export class ArchidektRecsComponent implements OnInit {
   calc_clock_subscribe;
   subject;
   randomness = 75;
-
 
   recs: any = {};
   colors: any = {};
@@ -42,6 +45,143 @@ export class ArchidektRecsComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  assignThemeWeights(themes: string[]) {
+    let weighted_themes = {};
+    let x_coeff = 0;
+    let factor = (1 - ((this.randomness) / 100));
+    for (let i = 0; i < themes.length; i++) {
+      x_coeff += Math.pow(factor, i);
+    }
+    let base = 100 / x_coeff;
+    let cur_coeff = 0;
+    for(let i = 0; i < themes.length; i++) {
+      cur_coeff += Math.pow(factor, i);
+      weighted_themes[themes[i]] = Math.floor(100 - ((cur_coeff - 1) * base)) / 100;
+    }
+    return weighted_themes;
+  }
+
+
+  getThemesFromSortedColors(colors: string) {
+    if (colors === "WUBRG") {
+      return subthemes.WUBRG;
+    }
+    else if (colors === "WUBR") {
+      return subthemes.WUBR;
+    }
+    else if (colors === "UBRG") {
+      return subthemes.UBRG;
+    }
+    else if (colors === "WBRG") {
+      return subthemes.BRGW;
+    }
+    else if (colors === "WUBG") {
+      return subthemes.GWUB;
+    }
+    else if (colors === "WUB") {
+      return subthemes.WUB;
+    }
+    else if (colors === "UBR") {
+      return subthemes.UBR;
+    }
+    else if (colors === "BRG") {
+      return subthemes.BRG;
+    }
+    else if (colors === "WRG") {
+      return subthemes.RGW;
+    }
+    else if (colors === "WUG") {
+      return subthemes.GWU;
+    }
+    else if (colors === "WBG") {
+      return subthemes.WBG;
+    }
+    else if (colors === "WUR") {
+      return subthemes.URW;
+    }
+    else if (colors === "UBG") {
+      return subthemes.BGU;
+    }
+    else if (colors === "WBR") {
+      return subthemes.RWB;
+    }
+    else if (colors === "URG") {
+      return subthemes.GUR;
+    }
+    else if (colors === "WU") {
+      return subthemes.WU;
+    }
+    else if (colors === "UB") {
+      return subthemes.UB;
+    }
+    else if (colors === "BR") {
+      return subthemes.BR;
+    }
+    else if (colors === "RG") {
+      return subthemes.RG;
+    }
+    else if (colors === "WG") {
+      return subthemes.GW;
+    }
+    else if (colors === "WB") {
+      return subthemes.WB;
+    }
+    else if (colors === "UR") {
+      return subthemes.UR;
+    }
+    else if (colors === "BG") {
+      return subthemes.BG;
+    }
+    else if (colors === "WR") {
+      return subthemes.RW;
+    }
+    else if (colors === "UG") {
+      return subthemes.GU;
+    }
+    else if (colors === "W") {
+      return subthemes.W;
+    }
+    else if (colors === "U") {
+      return subthemes.U;
+    }
+    else if (colors === "B") {
+      return subthemes.B;
+    }
+    else if (colors === "R") {
+      return subthemes.R;
+    }
+    else if (colors === "G") {
+      return subthemes.G;
+    }
+    else if (colors === "C") {
+      return subthemes.C;
+    }
+    else {
+      console.log("Bad Color Combo: " + colors);
+      return [];
+    }
+  }
+
+  getSortedColors(colors: string[]) {
+    let out_colors = "";
+    if (colors.includes("W")) {
+      out_colors += "W";
+    }
+    if (colors.includes("U")) {
+      out_colors += "U";
+    }
+    if (colors.includes("B")) {
+      out_colors += "B";
+    }
+    if (colors.includes("R")) {
+      out_colors += "R";
+    }
+    if (colors.includes("G")) {
+      out_colors += "G";
+    }
+    return out_colors;
   }
 
   pickRandomTheme(themes){
@@ -133,6 +273,8 @@ export class ArchidektRecsComponent implements OnInit {
                   let edhrec_data: any = com;
                   final_deck.themes = edhrec_data.themes;
                   final_deck.random_theme = this.pickRandomTheme(final_deck.themes);
+                  console.log(this.colors);
+                  final_deck.random_subtheme = this.pickRandomTheme(this.getThemesFromSortedColors(this.getSortedColors(this.colors[final_deck.commander])));
                   res()
                 }, (e) => {
                   res();
@@ -360,6 +502,7 @@ export class ArchidektRecsComponent implements OnInit {
               Scry.Cards.byName(deck.cmdr).then(
                 cur =>
                 {
+                  this.colors[deck.cmdr] = cur.color_identity;
                   for (let col of cur.color_identity) {
                     deck.count *= this.color_modifiers[col];
                   }

@@ -1,4 +1,4 @@
-export const W: string[] = [
+const W: string[] = [
   "Lifegain",
   "Equipment",
   "Aura",
@@ -28,7 +28,7 @@ export const W: string[] = [
   "Cleric Tribal"
 ];
 
-export const U: string[] = [
+const U: string[] = [
   "Artifact",
   "Cantrip",
   "Wheel",
@@ -59,7 +59,7 @@ export const U: string[] = [
   "Spirit Tribal"
 ];
 
-export const B: string[] = [
+const B: string[] = [
   "Aristocrat",
   "Lifegain",
   "Discard",
@@ -87,7 +87,7 @@ export const B: string[] = [
   "Spirit Tribal"
 ];
 
-export const R: string[] = [
+const R: string[] = [
   //"Treasure",
   "Burn",
   "Artifact",
@@ -116,7 +116,7 @@ export const R: string[] = [
   "Elemental Tribal"
 ];
 
-export const G: string[] = [
+const G: string[] = [
   "+1/+1 Counter",
   "Deathtouch",
   "Sacrifice",
@@ -148,7 +148,7 @@ export const G: string[] = [
   "Eldrazi Tribal"
 ];
 
-export const C: string[] = [
+const C: string[] = [
   "Artifact",
   "Big Mana",
   "Sacrifice",
@@ -156,7 +156,7 @@ export const C: string[] = [
   "Eldrazi Tribal"
 ];
 
-export const WU: string[] = [
+const WU: string[] = [
   "Vehicle",
   "Foretell",
   "Blink",
@@ -188,7 +188,7 @@ export const WU: string[] = [
   "Sphinx Tribal"
 ];
 
-export const UB: string[] = [
+const UB: string[] = [
   "Ninjutsu",
   "Zombie Tokens",
   "Mill",
@@ -221,7 +221,7 @@ export const UB: string[] = [
   "Faerie Tribal"
 ];
 
-export const BR: string[] = [
+const BR: string[] = [
   "Treasure",
   "Madness",
   "Exile",
@@ -252,7 +252,7 @@ export const BR: string[] = [
   "Dragon Tribal"
 ];
 
-export const RG: string[] = [
+const RG: string[] = [
   "+1/+1 Counters",
   "Enchantment",
   "Lifegain",
@@ -281,7 +281,36 @@ export const RG: string[] = [
   "Elephant Tribal"
 ];
 
-export const WB: string[] = [
+const GW: string[] = [
+  "+1/+1 Counters",
+  "Enchantment",
+  "Lifegain",
+  "Tokens",
+  "Auras",
+  "Kaheera Companion",
+  "Equipment",
+  //"Hatebear",
+  "Landfall",
+  "Populate",
+  "Historic",
+  "Pod",
+  //"Stax",
+  "Legends",
+  "Group Hug",
+  "Blink",
+  "Lands",
+  "Sacrifice",
+  //"Treasure",
+  "Human Tokens",
+  "Human Tribal",
+  "Cat Tribal",
+  "Elf Tribal",
+  "Angel Tribal",
+  "Unicorn Tribal",
+  "Elephant Tribal"
+];
+
+const WB: string[] = [
   "Lifegain",
   "Aristocrat",
   "Aura",
@@ -310,7 +339,7 @@ export const WB: string[] = [
   "Zombie Tribal"
 ];
 
-export const UR: string[] = [
+const UR: string[] = [
   "Spellslinger",
   "Wheel",
   //"Treasure",
@@ -338,7 +367,7 @@ export const UR: string[] = [
   "Myr Tribal"
 ];
 
-export const BG: string[] = [
+const BG: string[] = [
   "Lifegain",
   "Aristocrat",
   "Sacrifice",
@@ -375,7 +404,7 @@ export const BG: string[] = [
   "Ooze Tribal"
 ];
 
-export const RW: string[] = [
+const RW: string[] = [
   "Equipment",
   "Artifact",
   "Sunforger",
@@ -407,7 +436,7 @@ export const RW: string[] = [
   "Knight Tribal"
 ];
 
-export const GU: string[] = [
+const GU: string[] = [
   "Tokens",
   "+1/+1 Counters",
   "Lands",
@@ -440,7 +469,7 @@ export const GU: string[] = [
   "Phyrexian Tribal"
 ];
 
-export const WUB: string[] = [
+const WUB: string[] = [
   "Lifegain",
   "Artifact",
   "Wheel",
@@ -474,7 +503,7 @@ export const WUB: string[] = [
   "Sphinx Tribal"
 ];
 
-export const UBR: string[] = [
+const UBR: string[] = [
   "Wheel",
   "Spellslinger",
   //"Treasure",
@@ -502,7 +531,7 @@ export const UBR: string[] = [
   "Rogue Tribal"
 ];
 
-export const BRG: string[] = [
+const BRG: string[] = [
   "Sacrifice",
   //"Treasure",
   "Lands",
@@ -530,7 +559,7 @@ export const BRG: string[] = [
   "Hydra Tribal"
 ];
 
-export const RGW: string[] = [
+const RGW: string[] = [
   "Tokens",
   "Aura",
   "Landfall",
@@ -562,7 +591,7 @@ export const RGW: string[] = [
   "Werewolf Tribal"
 ];
 
-export const GWU: string[] = [
+const GWU: string[] = [
   "Toughness",
   "Aura",
   "Enchantment",
@@ -586,7 +615,7 @@ export const GWU: string[] = [
   "Merfolk Tribal"
 ];
 
-export const WBG: string[] = [
+const WBG: string[] = [
   "+1/+1 Counters",
   "Pod",
   "Toughness",
@@ -613,7 +642,7 @@ export const WBG: string[] = [
   "Spirit Tribal"
 ];
 
-export const URW: string[] = [
+const URW: string[] = [
   "Spellslinger",
   "Cycling",
   "Wheel",
@@ -640,7 +669,7 @@ export const URW: string[] = [
   "Spirit Tribal"
 ];
 
-export const BGU: string[] = [
+const BGU: string[] = [
   "Pod",
   "Sacrifice",
   "Lands",
@@ -672,7 +701,7 @@ export const BGU: string[] = [
   "Eldrazi Tribal"
 ];
 
-export const RWB: string[] = [
+const RWB: string[] = [
   "Equipment",
   "Lifegain",
   "Flying",
@@ -699,7 +728,7 @@ export const RWB: string[] = [
 ];
 
 
-export const GUR: string[] = [
+const GUR: string[] = [
   "Spell Copy",
   "Wheel",
   "Pod",
@@ -728,7 +757,7 @@ export const GUR: string[] = [
   "Shapeshifter Tribal"
 ];
 
-export const WUBR: string[] = [
+const WUBR: string[] = [
   "Artifact",
   //"Treasure",
   "Vehicle",
@@ -738,7 +767,7 @@ export const WUBR: string[] = [
   "Blink"
 ];
 
-export const UBRG: string[] = [
+const UBRG: string[] = [
   "Pod",
   "Wheel",
   "Lands",
@@ -749,7 +778,7 @@ export const UBRG: string[] = [
   "X Spell"
 ];
 
-export const BRGW: string[] = [
+const BRGW: string[] = [
   "Pod",
   "Tokens",
   "Saproling Tokens",
@@ -760,7 +789,7 @@ export const BRGW: string[] = [
   "Human Tribal"
 ];
 
-export const RGWU: string[] = [
+const RGWU: string[] = [
   "Lands",
   "Landfall",
   "Pod",
@@ -769,7 +798,7 @@ export const RGWU: string[] = [
   "Artifact"
 ];
 
-export const GWUB: string[] = [
+const GWUB: string[] = [
   "+1/+1 Counters",
   "Pod",
   "Lifegain",
@@ -777,7 +806,7 @@ export const GWUB: string[] = [
   "Merfolk Tribal"
 ];
 
-export const WUBRG: string[] = [
+const WUBRG: string[] = [
   "Enchantment",
   "Lands",
   "Pod",
@@ -840,3 +869,38 @@ export const WUBRG: string[] = [
   "Phyrexian Tribal",
   "Wizard Tribal"
 ];
+
+export const subthemes = {
+  W: W,
+  U: U,
+  B: B,
+  R: R,
+  G: G,
+  C: C,
+  WU: WU,
+  UB: UB,
+  BR: BR,
+  RG: RG,
+  GW: GW,
+  WB: WB,
+  UR: UR,
+  BG: BG,
+  RW: RW,
+  GU: GU,
+  WUB: WUB,
+  UBR: UBR,
+  BRG: BRG,
+  RGW: RGW,
+  GWU: GWU,
+  WBG: WBG,
+  URW: URW,
+  BGU: BGU,
+  RWB: RWB,
+  GUR: GUR,
+  WUBR: WUBR,
+  UBRG: UBRG,
+  BRGW: BRGW,
+  RGWU: RGWU,
+  GWUB: GWUB,
+  WUBRG: WUBRG
+}
