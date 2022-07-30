@@ -14,6 +14,7 @@ import * as Scry from "scryfall-sdk";
   styleUrls: ['./archidekt-recs.component.scss']
 })
 export class ArchidektRecsComponent implements OnInit {
+  testing_recs = true;
 
   calculating = false;
   calculated = false;
@@ -27,8 +28,9 @@ export class ArchidektRecsComponent implements OnInit {
   recs: any = {};
   colors: any = {};
   sorted_recs: any[] = [];
-  decks: any = {};
+  my_decks: any = {};
   my_commanders: string[] = [];
+  my_themes = {};
   color_modifiers: any = {};
 
   commander_position = 0;
@@ -236,37 +238,34 @@ export class ArchidektRecsComponent implements OnInit {
         this.sorted_recs.sort((a, b) => (b.count > a.count) ? 1 : -1);
         this.calculating = false;
         this.calculated = true;
-        if (this.sorted_recs.length > 0) {
-          let final_deck = await this.getScryfallCommanderData(this.sorted_recs[0].cmdr);
+        /*
+
+         */
+        for(let j = 0; j < this.sorted_recs.length; j++) {
+          if (j > 2) {
+            break;
+          }
+          let final_deck = await this.getScryfallCommanderData(this.sorted_recs[j].cmdr);
           let final_deck_images = await final_deck.getPrints();
-          this.final_decks.push(
-            {
-              commander: this.sorted_recs[0].cmdr,
-              image_url: final_deck_images[0].image_uris.png
-            }
-          );
+          if (final_deck_images) {
+            this.final_decks.push(
+              {
+                commander: this.sorted_recs[j].cmdr,
+                image_url: final_deck_images[0].image_uris.png
+              }
+            );
+          }
+          else {
+            this.final_decks.push(
+              {
+                commander: this.sorted_recs[j].cmdr,
+                image_url: ''
+              }
+            )
+          }
+
         }
-        if (this.sorted_recs.length > 1) {
-          let final_deck = await this.getScryfallCommanderData(this.sorted_recs[1].cmdr);
-          let final_deck_images = await final_deck.getPrints();
-          this.final_decks.push(
-            {
-              commander: this.sorted_recs[1].cmdr,
-              image_url: final_deck_images[1].image_uris.png
-            }
-          );
-        }
-        if (this.sorted_recs.length > 2) {
-          let final_deck = await this.getScryfallCommanderData(this.sorted_recs[2].cmdr);
-          let final_deck_images = await final_deck.getPrints();
-          this.final_decks.push(
-            {
-              commander: this.sorted_recs[2].cmdr,
-              image_url: final_deck_images[2].image_uris.png
-            }
-          );
-        }
-        this.subject.next();
+        this.getThemeRatings();
         for (let final_deck of this.final_decks) {
           await new Promise<void>(
             (res) => {
@@ -274,14 +273,56 @@ export class ArchidektRecsComponent implements OnInit {
                 (com) => {
                   let edhrec_data: any = com;
                   final_deck.themes = edhrec_data.themes;
-                  final_deck.random_theme = this.pickRandomTheme(final_deck.themes);
-                  final_deck.random_subtheme = this.pickRandomTheme(this.getThemesFromSortedColors(this.getSortedColors(this.colors[final_deck.commander])));
-                  res()
+
+                  //final_deck.random_theme = this.pickRandomTheme(final_deck.themes);
+                  //final_deck.random_subtheme = this.pickRandomTheme(this.getThemesFromSortedColors(this.getSortedColors(this.colors[final_deck.commander])));
+
+                  let weighted_themes = this.assignThemeWeights(final_deck.themes);
+                  let weighted_themes_list: any[] = [];
+                  for (let w_theme of Object.keys(weighted_themes)) {
+                    if(this.my_themes[w_theme] != null) {
+                      weighted_themes[w_theme] *= Math.pow(this.my_themes[w_theme].val, ((this.theme_randomness / 100)));
+                    }
+                    let jitter = Math.floor(Math.random() * this.theme_randomness) / 100;
+                    weighted_themes[w_theme] *= Math.pow(1 - jitter, ((this.theme_randomness / 100)));
+                    weighted_themes_list.push(
+                      {
+                        theme: w_theme,
+                        weight: weighted_themes[w_theme]
+                      });
+                  }
+
+                  let weighted_subthemes = this.assignThemeWeights(this.getThemesFromSortedColors(this.getSortedColors(this.colors[final_deck.commander])));
+                  let weighted_subthemes_list: any[] = [];
+                  for (let ws_theme of Object.keys(weighted_subthemes)) {
+                    if (this.my_themes[ws_theme] != null) {
+                      weighted_subthemes[ws_theme] *= Math.pow(this.my_themes[ws_theme].val, ((this.theme_randomness / 100)));
+                    }
+                    let jitter = Math.floor(Math.random() * this.theme_randomness) / 100;
+                    weighted_subthemes[ws_theme] *= Math.pow(1 - jitter, ((this.theme_randomness / 100)));
+                    weighted_subthemes_list.push(
+                      {
+                        theme: ws_theme,
+                        weight: weighted_subthemes[ws_theme]
+                      });
+                  }
+
+                  weighted_themes_list.sort((a, b) => (b.weight > a.weight) ? 1 : -1);
+                  weighted_subthemes_list.sort((a, b) => (b.weight > a.weight) ? 1 : -1);
+                  console.log("weighted_themes:");
+                  console.log(weighted_themes_list);
+                  console.log("weighted subthemes:");
+                  console.log(weighted_subthemes_list);
+                  final_deck.random_theme = weighted_themes_list[0].theme;
+                  final_deck.random_subtheme = weighted_subthemes_list[0].theme;
+
+                  res();
                 }, (e) => {
                   res();
                 });
             });
         }
+        this.subject.next();
         console.log("done");
       });
     });
@@ -319,7 +360,9 @@ export class ArchidektRecsComponent implements OnInit {
                         })
                       }
                     );
-                    break; //THIS IS FOR TESTING ONLY!!!
+                    if (this.testing_recs) {
+                      break;
+                    }
                   }
                   this.commander_position++;
                 }
@@ -424,7 +467,7 @@ export class ArchidektRecsComponent implements OnInit {
   async loadDeckScryfallInfo() {
     return new Promise<void>(
       async (reso) => {
-        for (let deck of this.decks) {
+        for (let deck of this.my_decks) {
           await new Promise<void>(
             async (resolve) => {
               let cur = await Scry.Cards.byName(deck.commander)
@@ -443,9 +486,13 @@ export class ArchidektRecsComponent implements OnInit {
       resolve => {
         this.getDecks().subscribe(
           (response) => {
-            this.decks = response;
-            for (let deck of this.decks) {
+            this.my_decks = response;
+            for (let deck of this.my_decks) {
               this.my_commanders.push(deck.commander);
+              this.getThemesForDeck(deck.id).subscribe(
+                (resp) => {
+                  deck.themes = resp;
+                });
             }
             this.loadDeckScryfallInfo().then(r => {
               this.getColorData();
@@ -455,15 +502,41 @@ export class ArchidektRecsComponent implements OnInit {
             });
           }
         );
-      }
-    )
+      });
+  }
 
+  getThemesForDeck(deck_id: number) {
+    return this.apiService.getApiDataFromServer(environment.deck_themes_url + deck_id);
+  }
+
+  getThemeRatings() {
+    for (let deck of this.my_decks) {
+      for(let theme of deck.themes) {
+        if (this.my_themes[theme.name] != null){
+          this.my_themes[theme.name].val += deck.play_rating;
+          this.my_themes[theme.name].count++;
+        }
+        else {
+          this.my_themes[theme.name] =
+            {
+              val: deck.play_rating,
+              count: 1
+            }
+        }
+      }
+    }
+    for (let theme_name of Object.keys(this.my_themes)) {
+      this.my_themes[theme_name].val /= this.my_themes[theme_name].count; //convert val to average, than make between 0 and 1
+      this.my_themes[theme_name].val /= 5; //convert val to average, than make between 0 and 1
+      this.my_themes[theme_name].val += 0.4;
+      this.my_themes[theme_name].count = null;
+    }
   }
 
   getColorData() {
     let w = 0; let u = 0; let b = 0; let r = 0; let g = 0;
     let w_play = 0; let u_play = 0; let b_play = 0; let r_play = 0; let g_play = 0;
-    for (let deck of this.decks) {
+    for (let deck of this.my_decks) {
       if (deck.build_rating > 0 && deck.play_rating > 0) {
         if (this.colors[deck.commander].includes('W')) {
           w_play += (deck.play_rating);
