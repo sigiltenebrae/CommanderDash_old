@@ -4,9 +4,12 @@
 
 export const environment = {
   production: false,
-  decks_url: 'http://localhost:3000/decks',
-  deck_themes_url: 'http://localhost:3000/deckthemesname/',
-  themes_url: 'http://localhost:3000/themes'
+  decks_url: 'http://192.168.1.19:3000/decks',
+  deck_themes_url: 'http://192.168.1.19:3000/deckthemesname/',
+  themes_url: 'http://192.168.1.19:3000/themes',
+  users_url: 'http://192.168.1.19:3000/users',
+  login_url: 'http://192.168.1.19:3000/login',
+  edhrec_commander_url: 'http://192.168.1.19:2525/commander'
 };
 
 /*

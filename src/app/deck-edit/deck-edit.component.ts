@@ -4,6 +4,7 @@ import {ApiInterfaceService} from "../services/api-interface.service";
 import {debounceTime, distinctUntilChanged, map, Observable, OperatorFunction, switchMap, tap} from "rxjs";
 import * as Scry from "scryfall-sdk";
 import {environment} from "../../environments/environment";
+import {NavbarDataService} from "../services/navbar-data.service";
 
 @Component({
   selector: 'app-deck-edit',
@@ -11,6 +12,7 @@ import {environment} from "../../environments/environment";
   styleUrls: ['./deck-edit.component.scss']
 })
 export class DeckEditComponent implements OnInit {
+  current_user: any;
 
   new_deck: boolean = false;
 
@@ -26,7 +28,7 @@ export class DeckEditComponent implements OnInit {
 
   deleting = false;
 
-  constructor(public router: Router, private route: ActivatedRoute, private apiService:ApiInterfaceService) { }
+  constructor(public router: Router, private route: ActivatedRoute, private apiService:ApiInterfaceService, private navDataService: NavbarDataService) { }
 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -37,20 +39,12 @@ export class DeckEditComponent implements OnInit {
     }
     else {
       this.new_deck = true;
-      this.deck = {};
-      this.deck.commander = "";
-      this.deck.friendly_name = "";
-      this.deck.url = "";
-      this.deck.image_url = "";
-      this.deck.image_url_back = "";
-      this.deck.build_rating = 0;
-      this.deck.play_rating = 0;
-      this.deck.win_rating = 0;
-      this.deck.themes = [];
-      this.deck.deleteThemes = [];
-      this.deck.active = true;
     }
-    this.loadPage();
+    this.navDataService.currentUserData.subscribe(
+      cur_user => {
+        this.current_user = cur_user;
+        this.loadPage();
+      });
   }
 
   loadPage() {
@@ -76,6 +70,21 @@ export class DeckEditComponent implements OnInit {
           this.getImages().then( r => {});
         }
       );
+    }
+    else {
+      this.deck = {};
+      this.deck.commander = "";
+      this.deck.friendly_name = "";
+      this.deck.url = "";
+      this.deck.image_url = "";
+      this.deck.image_url_back = "";
+      this.deck.build_rating = 0;
+      this.deck.play_rating = 0;
+      this.deck.win_rating = 0;
+      this.deck.themes = [];
+      this.deck.deleteThemes = [];
+      this.deck.active = true;
+      this.deck.creator = this.current_user.id;
     }
     this.getAllThemes().subscribe(
       (response:any) => {
@@ -248,4 +257,15 @@ export class DeckEditComponent implements OnInit {
       }
     }
   }
+
+  userMatch() {
+    if(this.deck && this.current_user) {
+      return this.deck.creator == this.current_user.id;
+    }
+    else {
+      return true;
+    }
+  }
 }
+
+

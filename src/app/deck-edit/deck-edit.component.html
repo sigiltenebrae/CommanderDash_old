@@ -280,7 +280,7 @@
         <div class="card-edit-image">
           <div class="card-carosel-view">
             <div class="card-carosel">
-              <div>
+              <div *ngIf="userMatch()">
                 <div class="card-carosel-left" (click)="downImage()">
                   <i class="fa-solid fa-angle-left"></i>
                 </div>
@@ -289,8 +289,11 @@
                   <i class="fa-solid fa-angle-right"></i>
                 </div>
               </div>
+              <div *ngIf="!userMatch()">
+                <img class="card-image" src="{{deck.image_url}}" alt="">
+              </div>
             </div>&nbsp;
-            <input id="deckImageEdit"
+            <input id="deckImageEdit" [disabled]="!userMatch()"
                    type="text" class="form-control bg-dark text-white"
                    value="{{deck.image_url}}" [(ngModel)]="deck.image_url"><br>
           </div>
@@ -306,7 +309,7 @@
               </div>
               <div class="col-6">
                 <div class="input-group mb-2">
-                  <input id="cmdrEdit"
+                  <input id="cmdrEdit" [disabled]="!userMatch()"
                     type="text" class="form-control bg-dark text-white"
                     [ngbTypeahead]="card_search"
                     value="{{deck.commander_new}}"
@@ -343,7 +346,7 @@
                       <div class="mb-3 row">
                         <label for="deckNameEdit" class="col-lg-2 deck-label text-wrap">Deck Name:</label>
                         <div class="col-sm-10">
-                          <input id="deckNameEdit"
+                          <input id="deckNameEdit" [disabled]="!userMatch()"
                                  type="text" class="form-control bg-dark text-white"
                                  value="{{deck.friendly_name}}" [(ngModel)]="deck.friendly_name">
                         </div>
@@ -351,7 +354,7 @@
                       <div class="mb-3 row">
                         <label class="col-lg-2 deck-label" for="deckUrlEdit">Deck URL:</label>
                         <div class="col-sm-10">
-                          <input id="deckUrlEdit"
+                          <input id="deckUrlEdit" [disabled]="!userMatch()"
                                  type="text" class="form-control bg-dark text-white"
                                  value="{{deck.url}}" [(ngModel)]="deck.url">
                         </div>
@@ -360,7 +363,7 @@
                       <div class="mb-3 row">
                         <label class="col-lg-2 star-label">Fun to Build:</label>
                         <div class="col-sm-10">
-                          <ngb-rating [(rate)]="deck.build_rating" [max]="5">
+                          <ngb-rating [(rate)]="deck.build_rating" [max]="5" [readonly]="!userMatch()">
                             <ng-template let-fill="fill" let-index="index">
                               <span class="star" [class.filled]="fill === 100">&#9733;</span>
                             </ng-template>
@@ -370,7 +373,7 @@
                       <div class="mb-3 row">
                         <label class="col-lg-2 star-label">Fun to Play:</label>
                         <div class="col-sm-10">
-                          <ngb-rating [(rate)]="deck.play_rating" [max]="5">
+                          <ngb-rating [(rate)]="deck.play_rating" [max]="5" [readonly]="!userMatch()">
                             <ng-template let-fill="fill" let-index="index">
                               <span class="star" [class.filled]="fill === 100">&#9733;</span>
                             </ng-template>
@@ -380,7 +383,7 @@
                       <div class="mb-3 row">
                         <label class="col-lg-2 star-label">Win Rate:</label>
                         <div class="col-sm-10">
-                          <ngb-rating [(rate)]="deck.win_rating" [max]="5">
+                          <ngb-rating [(rate)]="deck.win_rating" [max]="5" [readonly]="!userMatch()">
                             <ng-template let-fill="fill" let-index="index">
                               <span class="star" [class.filled]="fill === 100">&#9733;</span>
                             </ng-template>
@@ -395,7 +398,7 @@
                           </label>
                         </div>
                         <div class="col-sm-10">
-                          <input class="form-check-input cmdr-check" type="checkbox" value="" id="flexCheckDeckActive" [(ngModel)]="deck.active">
+                          <input class="form-check-input cmdr-check" type="checkbox" value="" id="flexCheckDeckActive" [(ngModel)]="deck.active" [disabled]="!userMatch()">
                         </div>
                       </div>
 
@@ -422,7 +425,7 @@
                         </ng-template>
 
                         <div class="col-6">
-                          <div class="input-group mb-2">
+                          <div class="input-group mb-2" *ngIf="userMatch()">
                             <input type="text" class="form-control bg-dark text-white"
                                    [(ngModel)]="temp_theme" [ngbTypeahead]="theme_search" [inputFormatter]="theme_formatter" [resultTemplate]="themert"
                                    (keyup.enter)="addTheme()">
@@ -444,10 +447,10 @@
           </div>
           <div class="card-body" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; text-align: right; border-top: 1px solid black; height: 10%; margin-bottom: 20px">
             <div class="btn-group">
-              <button *ngIf="deleting && !new_deck" type="button" class="btn btn-outline-danger" (click)="deleteDeck()">Confirm</button>
-              <button *ngIf="deleting && !new_deck" type="button" class="btn btn-outline-primary" (click)="deleting=false;">Cancel</button>
-              <button *ngIf="!deleting && !new_deck" type="button" class="btn btn-outline-light" (click)="deleteDeck()">Delete</button>
-              <button type="button" class="btn btn-outline-light" (click)="updateDeck()">Save</button>
+              <button *ngIf="deleting && !new_deck" type="button" class="btn btn-outline-danger" (click)="deleteDeck()" [disabled]="!userMatch()">Confirm</button>
+              <button *ngIf="deleting && !new_deck" type="button" class="btn btn-outline-primary" (click)="deleting=false;" [disabled]="!userMatch()">Cancel</button>
+              <button *ngIf="!deleting && !new_deck" type="button" class="btn btn-outline-light" (click)="deleteDeck()" [disabled]="!userMatch()">Delete</button>
+              <button type="button" class="btn btn-outline-light" (click)="updateDeck()" [disabled]="!userMatch()">Save</button>
             </div>
           </div>
         </div>

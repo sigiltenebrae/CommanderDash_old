@@ -208,7 +208,7 @@ export class ArchidektRecsComponent implements OnInit {
   }
 
   getEdhrecData(commander) {
-    return this.apiService.postApiDataToServer('http://localhost:2525/commander', { commander: commander });
+    return this.apiService.postApiDataToServer(environment.edhrec_commander_url, { commander: commander });
   }
 
   restart_Recs() {

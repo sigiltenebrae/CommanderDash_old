@@ -12,20 +12,26 @@ import {environment} from "../../environments/environment";
 })
 export class DeckViewerComponent implements OnInit {
 
+  current_user: any = {};
   decks: any = [];
   colors: any = {};
 
   constructor(private apiService:ApiInterfaceService, private navDataService: NavbarDataService) { }
 
   ngOnInit(): void {
-    this.loadPage();
-    this.navDataService.sharedDeckSort.subscribe(sort_type => {
-      this.sortDecks(sort_type);
-    })
+    this.navDataService.currentUserData.subscribe( cur_user => {
+      this.current_user = cur_user;
+      if (this.current_user.id) {
+        this.loadPage();
+        this.navDataService.sharedDeckSort.subscribe(sort_type => {
+          this.sortDecks(sort_type);
+        })
+      }
+    });
   }
 
   loadPage() {
-    this.getDecks().subscribe(
+    this.getDecksForUser().subscribe(
       (response) => {
         this.decks = response;
         for (let deck of this.decks) {
@@ -40,8 +46,13 @@ export class DeckViewerComponent implements OnInit {
     );
   }
 
-  getDecks() {
+
+  getDecks1() {
     return this.apiService.getApiDataFromServer(environment.decks_url);
+  }
+
+  getDecksForUser() {
+    return this.apiService.getApiDataFromServer(environment.users_url + '/' + this.current_user.id);
   }
 
   getThemesForDeck(deck_id: number) {

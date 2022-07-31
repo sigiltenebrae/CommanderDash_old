@@ -13,8 +13,8 @@ import {environment} from "../environments/environment";
 })
 export class AppComponent implements OnInit {
   title = 'CommanderDash';
-
-  decks_url = 'http://localhost:3000/decks';
+  users: any = [];
+  current_user: any;
 
   public current_deck: any;
   all_decks: any[] = [];
@@ -27,10 +27,21 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.navDataService.currentUserData.subscribe( cur_user => {
+      this.current_user = cur_user;
+    });
     this.loadPage();
   }
 
   loadPage() {
+    this.getAllUsers().subscribe(
+      (resp) => {
+        this.users = resp;
+        if(this.users && this.users.length > 0) {
+          this.changeUser(this.users[0]);
+        }
+      }
+    );
     this.getAllDecks().subscribe(
       (response:any) => {
         this.all_decks = response;
@@ -57,8 +68,12 @@ export class AppComponent implements OnInit {
     });
   }
 
+  getAllUsers() {
+    return this.apiService.getApiDataFromServer(environment.users_url);
+  }
+
   getAllDecks() {
-    return this.apiService.getApiDataFromServer(this.decks_url);
+    return this.apiService.getApiDataFromServer(environment.decks_url);
   }
 
   async loadDeckScryfallInfo() {
@@ -86,5 +101,9 @@ export class AppComponent implements OnInit {
 
   deckViewerChangeSort(sort_type: string) {
     this.navDataService.updateSort(sort_type);
+  }
+
+  changeUser(user_obj: any) {
+    this.navDataService.setUser(user_obj);
   }
 }
