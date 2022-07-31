@@ -6,6 +6,7 @@ import { environment } from "../../environments/environment";
 import { subthemes } from "../subthemes";
 
 import * as Scry from "scryfall-sdk";
+import {NavbarDataService} from "../services/navbar-data.service";
 
 
 @Component({
@@ -15,6 +16,9 @@ import * as Scry from "scryfall-sdk";
 })
 export class ArchidektRecsComponent implements OnInit {
   testing_recs = true;
+
+  current_user: any = {};
+  calculating_user: any = {};
 
   calculating = false;
   calculated = false;
@@ -55,10 +59,12 @@ export class ArchidektRecsComponent implements OnInit {
   final_decks: any[] = [];
 
 
-  constructor(private apiService:ApiInterfaceService) { }
+  constructor(private apiService:ApiInterfaceService, private navDataService: NavbarDataService) { }
 
   ngOnInit(): void {
-
+    this.navDataService.currentUserData.subscribe( cur_user => {
+      this.current_user = cur_user;
+    });
   }
 
   filtersOn(): boolean {
@@ -326,6 +332,7 @@ export class ArchidektRecsComponent implements OnInit {
 
   getRecommendation() {
     this.calculating = true;
+    this.calculating_user = this.current_user;
     this.subject = new Subject();
     this.calc_clock_subscribe = timer(1000, 1000);
     timer(1000, 1000).pipe(
@@ -465,7 +472,7 @@ export class ArchidektRecsComponent implements OnInit {
       async (resol) => {
         await new Promise<void>(
           (resolv) => {
-            this.getDecks().subscribe(
+            this.getDecksForUser().subscribe(
               async (response) => {
                 let decks: any = response;
                 this.commander_total = decks.length;
@@ -502,8 +509,12 @@ export class ArchidektRecsComponent implements OnInit {
     );
   }
 
-  getDecks() {
+  getDecks1() {
     return this.apiService.getApiDataFromServer(environment.decks_url);
+  }
+
+  getDecksForUser() {
+    return this.apiService.getApiDataFromServer(environment.users_url + '/' + this.calculating_user.id);
   }
 
   async getRecommendationForCommander(commander, score): Promise<void> {
@@ -527,7 +538,7 @@ export class ArchidektRecsComponent implements OnInit {
               let deck = top_decks.results[random_user];
               if (deck) {
                 await new Promise<void> ((resolv) => {
-                  this.getDecksForUser(deck.owner.username).subscribe(
+                  this.getDecksForArchidektUser(deck.owner.username).subscribe(
                     async (resp) => {
                       let user_decks: any = resp;
                       this.user_deck_total = user_decks.results.length;
@@ -609,7 +620,7 @@ export class ArchidektRecsComponent implements OnInit {
   async loadDeckInfo() {
     return new Promise<void>(
       resolve => {
-        this.getDecks().subscribe(
+        this.getDecksForUser().subscribe(
           (response) => {
             this.my_decks = response;
             for (let deck of this.my_decks) {
@@ -722,7 +733,7 @@ export class ArchidektRecsComponent implements OnInit {
     return this.apiService.getApiDataFromServer('/archidekt/api/decks/cards/?deckFormat=3&commanders="' + commander + '"&orderBy=-viewCount&pageSize=100');
   }
 
-  getDecksForUser(user_name) {
+  getDecksForArchidektUser(user_name) {
     return this.apiService.getApiDataFromServer('/archidekt/api/decks/cards/?owner=' + user_name + '&orderBy=-viewCount');
   }
 

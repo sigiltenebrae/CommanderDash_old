@@ -12,6 +12,8 @@ import * as Scry from "scryfall-sdk";
 })
 export class DeckMetricsComponent implements OnInit {
 
+  current_user: any = {};
+
   decks: any = [];
   colors: any = {};
   theme_counts: any = {};
@@ -79,26 +81,38 @@ export class DeckMetricsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadPage();
+    this.navDataService.currentUserData.subscribe( cur_user => {
+      this.current_user = cur_user;
+      if (this.current_user.id) {
+        this.loadPage();
+      }
+    });
+
   }
 
   loadPage() {
-    this.getDecks().subscribe(
-      (response) => {
+    this.decks = {};
+    this.theme_counts = {};
+    this.getDecksForUser().subscribe(
+      async (response) => {
         this.decks = response;
         for (let deck of this.decks) {
-          this.getThemesForDeck(deck.id).subscribe(
-            (resp) => {
-              deck.themes = resp;
-              for (let theme of deck.themes) {
-                if (this.theme_counts[theme.name] != null) {
-                  this.theme_counts[theme.name] ++;
-                }
-                else {
-                  this.theme_counts[theme.name] = 1;
-                }
-              }
-            });
+          await new Promise<void>(
+            (res) => {
+              this.getThemesForDeck(deck.id).subscribe(
+                (resp) => {
+                  deck.themes = resp;
+                  for (let theme of deck.themes) {
+                    if (this.theme_counts[theme.name] != null) {
+                      this.theme_counts[theme.name]++;
+                    } else {
+                      this.theme_counts[theme.name] = 1;
+                    }
+                  }
+                  res();
+                });
+            })
+
         }
         this.loadDeckScryfallInfo().then(r => {
           this.loadRatingData();
@@ -109,8 +123,12 @@ export class DeckMetricsComponent implements OnInit {
     );
   }
 
-  getDecks() {
+  getDecks1() {
     return this.apiService.getApiDataFromServer(environment.decks_url);
+  }
+
+  getDecksForUser() {
+    return this.apiService.getApiDataFromServer(environment.users_url + '/' + this.current_user.id);
   }
 
   getThemesForDeck(deck_id: number) {
