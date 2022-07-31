@@ -20,14 +20,14 @@
                 <div class="input-group mb-2">
                   <input type="text" class="form-control text-white bg-dark" value="{{theme.name}}" disabled>
                   <span class="input-group-append">
-                    <button class="btn btn-outline-light" type="button" (click)="deleteTheme(theme)">
+                    <button class="btn btn-outline-light" type="button" (click)="deleteTheme(theme)" [disabled]="true">
                       <i class="fa fa-times"></i>
                     </button>
                   </span>
                 </div>
               </div>
               <div class="col-6">
-                <div class="input-group mb-2">
+                <div class="input-group mb-2" style="display: none">
                   <input type="text" class="form-control text-white bg-dark" [(ngModel)]="temp_theme" (keyup.enter)="createTheme()">
                   <span class="input-group-append">
                     <button class="btn btn-outline-light" type="button" (click)="createTheme()">
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="card-body" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; text-align: right; border-top: 1px solid black; height: 10%; margin-bottom: 20px">
-          <button type="button" class="btn btn-outline-light" (click)="updateThemes()">Save</button>
+          <button type="button" class="btn btn-outline-light" (click)="updateThemes()" [disabled]="true">Save</button>
         </div>
       </div>
     </div>

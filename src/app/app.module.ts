@@ -39,7 +39,7 @@ import {MatSelectModule} from "@angular/material/select";
       {path: '', redirectTo: 'decks', pathMatch: 'full'},
       {path: 'decks', component: DeckViewerComponent},
       {path: 'decks/:deckId', component: DeckEditComponent},
-      //{path: 'themes', component: ThemeEditComponent},
+      {path: 'themes', component: ThemeEditComponent},
       {path: 'metrics', component: DeckMetricsComponent},
       {path: 'recommendations', component: ArchidektRecsComponent}
     ]),
