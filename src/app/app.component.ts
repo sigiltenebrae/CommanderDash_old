@@ -40,11 +40,7 @@ export class AppComponent implements OnInit {
     );
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        // @ts-ignore
-        if (this.router.url === '/') {
-          this.current_component = 'decks';
-        }
-        else if (this.router.url.match('decks\/\d*')) {
+        if (this.router.url.match('decks\/\d*')) {
           let deck_id = this.router.url.substring(7);
           if(Number(deck_id) > -1) {
             this.current_component = 'deck_edit'
@@ -52,6 +48,10 @@ export class AppComponent implements OnInit {
           else {
             this.current_component = 'new_deck'
           }
+        }
+        else {
+          this.current_component = this.router.url;
+          console.log(this.router.url);
         }
       }
     });

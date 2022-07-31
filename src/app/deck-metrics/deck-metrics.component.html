@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row justify-content-between">
     <div class="col-xl-3" *ngIf="buildRatingChartData">
-      <div style="display: block">
-        <canvas baseChart style="height: 300px"
+      <div style="display: block" >
+        <canvas baseChart style="height: 300px; background-color: rgba(255, 255, 255, 0.9); padding: 5px; border-radius: 10px;"
                 [data]="buildRatingChartData"
                 [options]="buildRatingChartOptions"
                 [plugins]="buildRatingChartPlugins"
@@ -13,7 +13,7 @@
     </div>
     <div class="col-xl-3" style="height: 300px" *ngIf="deckStatsChartDatasets">
       <div style="display: block">
-        <canvas baseChart
+        <canvas baseChart style="background-color: rgba(255, 255, 255, 0.9); padding: 5px; border-radius: 10px;"
                 [labels]="deckStatsChartLabels"
                 [datasets]="deckStatsChartDatasets"
                 [options]="deckStatsChartOptions"
@@ -23,10 +23,11 @@
       </div>
     </div>
   </div>
+  <br>
   <div class="row justify-content-between">
-    <div class="col-xl-6">
+    <div class="col-xl-6" *ngIf="themeCountData">
       <div style="display: block">
-        <canvas baseChart style="height: 500px; width: 100%"
+        <canvas baseChart style="height: 500px; width: 100%; background-color: rgba(255, 255, 255, 0.9); padding: 5px; border-radius: 10px;"
         [data]="themeCountData"
         [options]="themeCountOptions"
         [plugins]="themeCountPlugins"
