@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { RouterModule } from "@angular/router";
 import { DeckViewerComponent } from './deck-viewer/deck-viewer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { NgChartsModule } from "ng2-charts";
 
@@ -29,16 +29,17 @@ import {MatSelectModule} from "@angular/material/select";
     DeckEditComponent,
     ThemeEditComponent,
     DeckMetricsComponent,
-    ArchidektRecsComponent
+    ArchidektRecsComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot([
-      {path: '', component: DeckViewerComponent},
+      {path: '', redirectTo: 'decks', pathMatch: 'full'},
+      {path: 'decks', component: DeckViewerComponent},
       {path: 'decks/:deckId', component: DeckEditComponent},
-      {path: 'themes', component: ThemeEditComponent},
+      //{path: 'themes', component: ThemeEditComponent},
       {path: 'metrics', component: DeckMetricsComponent},
       {path: 'recommendations', component: ArchidektRecsComponent}
     ]),
@@ -49,8 +50,10 @@ import {MatSelectModule} from "@angular/material/select";
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule
   ],
+  exports: [RouterModule],
   providers: [],
   bootstrap: [AppComponent]
 })
