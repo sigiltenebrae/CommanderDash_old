@@ -313,11 +313,8 @@
                     type="text" class="form-control bg-dark text-white"
                     [ngbTypeahead]="card_search"
                     value="{{deck.commander_new}}"
-                    [(ngModel)]="deck.commander_new"
+                    [(ngModel)]="deck.commander_new" (ngModelChange)="updateCommander()"
                     [editable]='false'/>
-                  <span class="input-group-append">
-                          <button class="btn btn-white border text-white bg-dark" type="button" (click)="updateCommander()"><i class="fa-solid fa-arrows-rotate"></i></button>
-                        </span>
                 </div>
 
               </div>
