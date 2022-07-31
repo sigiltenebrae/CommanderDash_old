@@ -21,9 +21,19 @@ export class ArchidektRecsComponent implements OnInit {
   calc_clock;
   calc_clock_subscribe;
   subject;
+
   user_randomness = 75;
   color_randomness = 75;
   theme_randomness = 75;
+  search_type = "And";
+  toggle_colors = false;
+  toggle_w = false;
+  toggle_u = false;
+  toggle_b = false;
+  toggle_r = false;
+  toggle_g = false;
+  toggle_c = false;
+  toggle_tribal = true;
 
   recs: any = {};
   colors: any = {};
@@ -49,6 +59,10 @@ export class ArchidektRecsComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  filtersOn(): boolean {
+    return this.toggle_colors;
   }
 
   assignThemeWeights(themes: string[]) {
@@ -159,7 +173,7 @@ export class ArchidektRecsComponent implements OnInit {
     else if (colors === "G") {
       return subthemes.G;
     }
-    else if (colors === "C") {
+    else if (colors === "") {
       return subthemes.C;
     }
     else {
@@ -217,6 +231,99 @@ export class ArchidektRecsComponent implements OnInit {
     return `${hours}:${minutes}:${seconds}`;
   }
 
+  filterOutRecommendation(commander): boolean {
+    if (this.toggle_colors) {
+      let cur_colors = this.colors[commander];
+      if (this.toggle_c) {
+        if (!(this.toggle_w || this.toggle_u || this.toggle_b || this.toggle_r || this.toggle_g)) { //Don't bother if any color is selected
+          if (cur_colors.length == 0) {
+            return false;
+          }
+          else {
+            return true;
+          }
+        }
+      }
+
+      if (this.toggle_w) {
+        if(cur_colors.includes("W")) {
+          if (this.search_type === "Or") {
+            return false;
+          }
+          if (this.search_type === "Not") {
+            return true;
+          }
+        }
+        else {
+          if (this.search_type === "And") {
+            return true;
+          }
+        }
+      }
+      if (this.toggle_u) {
+        if(cur_colors.includes("U")) {
+          if (this.search_type === "Or") {
+            return false;
+          }
+          if (this.search_type === "Not") {
+            return true;
+          }
+        }
+        else {
+          if (this.search_type === "And") {
+            return true;
+          }
+        }
+      }
+      if (this.toggle_b) {
+        if(cur_colors.includes("B")) {
+          if (this.search_type === "Or") {
+            return false;
+          }
+          if (this.search_type === "Not") {
+            return true;
+          }
+        }
+        else {
+          if (this.search_type === "And") {
+            return true;
+          }
+        }
+      }
+      if (this.toggle_r) {
+        if(cur_colors.includes("R")) {
+          if (this.search_type === "Or") {
+            return false;
+          }
+          if (this.search_type === "Not") {
+            return true;
+          }
+        }
+        else {
+          if (this.search_type === "And") {
+            return true;
+          }
+        }
+      }
+      if (this.toggle_g) {
+        if(cur_colors.includes("G")) {
+          if (this.search_type === "Or") {
+            return false;
+          }
+          if (this.search_type === "Not") {
+            return true;
+          }
+        }
+        else {
+          if (this.search_type === "And") {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
   getRecommendation() {
     this.calculating = true;
     this.subject = new Subject();
@@ -238,16 +345,24 @@ export class ArchidektRecsComponent implements OnInit {
         this.sorted_recs.sort((a, b) => (b.count > a.count) ? 1 : -1);
         this.calculating = false;
         this.calculated = true;
-        /*
+        if (this.filtersOn()) { //Filter out decks that do not match
+          for(let k = 0; k < this.sorted_recs.length; k++) {
+            if (this.filterOutRecommendation(this.sorted_recs[k].cmdr)) {
+              this.sorted_recs.splice(k, 1);
+              k--;
+            }
+          }
+        }
 
-         */
+
+
         for(let j = 0; j < this.sorted_recs.length; j++) {
           if (j > 2) {
             break;
           }
           let final_deck = await this.getScryfallCommanderData(this.sorted_recs[j].cmdr);
           let final_deck_images = await final_deck.getPrints();
-          if (final_deck_images) {
+          if (final_deck_images && final_deck_images.length > 0 && final_deck_images[0].image_uris) {
             this.final_decks.push(
               {
                 commander: this.sorted_recs[j].cmdr,
@@ -273,9 +388,6 @@ export class ArchidektRecsComponent implements OnInit {
                 (com) => {
                   let edhrec_data: any = com;
                   final_deck.themes = edhrec_data.themes;
-
-                  //final_deck.random_theme = this.pickRandomTheme(final_deck.themes);
-                  //final_deck.random_subtheme = this.pickRandomTheme(this.getThemesFromSortedColors(this.getSortedColors(this.colors[final_deck.commander])));
 
                   let weighted_themes = this.assignThemeWeights(final_deck.themes);
                   let weighted_themes_list: any[] = [];
@@ -309,12 +421,23 @@ export class ArchidektRecsComponent implements OnInit {
 
                   weighted_themes_list.sort((a, b) => (b.weight > a.weight) ? 1 : -1);
                   weighted_subthemes_list.sort((a, b) => (b.weight > a.weight) ? 1 : -1);
-                  console.log("weighted_themes:");
-                  console.log(weighted_themes_list);
-                  console.log("weighted subthemes:");
-                  console.log(weighted_subthemes_list);
-                  final_deck.random_theme = weighted_themes_list[0].theme;
-                  final_deck.random_subtheme = weighted_subthemes_list[0].theme;
+
+                  if (!this.toggle_tribal) { //Remove Tribal Results
+                    for (let p = 0; p < weighted_themes_list.length; p++) {
+                      if (weighted_themes_list[p].theme.toLowerCase().includes("tribal")) {
+                        weighted_themes_list.splice(p, 1);
+                        p--;
+                      }
+                    }
+                    for (let p = 0; p < weighted_subthemes_list.length; p++) {
+                      if (weighted_subthemes_list[p].theme.toLowerCase().includes("tribal")) {
+                        weighted_subthemes_list.splice(p, 1);
+                        p--;
+                      }
+                    }
+                  }
+                  final_deck.random_theme = weighted_themes_list.length > 0 ? weighted_themes_list[0].theme: "";
+                  final_deck.random_subtheme = weighted_subthemes_list.length > 0 ? weighted_subthemes_list[0].theme: "";
 
                   res();
                 }, (e) => {
@@ -402,44 +525,46 @@ export class ArchidektRecsComponent implements OnInit {
             for (let i = 0; i < this.top_deck_total; i++) {
               let random_user = Math.floor(Math.random() * (top_decks.results.length - i));
               let deck = top_decks.results[random_user];
-              await new Promise<void> ((resolv) => {
-                this.getDecksForUser(deck.owner.username).subscribe(
-                  async (resp) => {
-                    let user_decks: any = resp;
-                    this.user_deck_total = user_decks.results.length;
-                    this.user_deck_position = 0;
-                    for (let user_deck of user_decks.results) {
-                      await new Promise<void>((resol) => {
-                        this.getInfoForDeck(user_deck.id).subscribe(
-                          (r) => {
-                            let deck_info: any = r;
-                            for (let card of deck_info.cards) {
-                              if (card.categories.includes("Commander")) {
-                                if (card.card.oracleCard.name !== commander && card.card.oracleCard.name !== "Kenrith, the Returned King") {
-                                  if (this.recs[card.card.oracleCard.name] != null) {
-                                    this.recs[card.card.oracleCard.name] += (score / 5);
-                                  } else {
-                                    this.recs[card.card.oracleCard.name] = (score / 5);
+              if (deck) {
+                await new Promise<void> ((resolv) => {
+                  this.getDecksForUser(deck.owner.username).subscribe(
+                    async (resp) => {
+                      let user_decks: any = resp;
+                      this.user_deck_total = user_decks.results.length;
+                      this.user_deck_position = 0;
+                      for (let user_deck of user_decks.results) {
+                        await new Promise<void>((resol) => {
+                          this.getInfoForDeck(user_deck.id).subscribe(
+                            (r) => {
+                              let deck_info: any = r;
+                              for (let card of deck_info.cards) {
+                                if (card.categories.includes("Commander")) {
+                                  if (card.card.oracleCard.name !== commander && card.card.oracleCard.name !== "Kenrith, the Returned King") {
+                                    if (this.recs[card.card.oracleCard.name] != null) {
+                                      this.recs[card.card.oracleCard.name] += (score / 5);
+                                    } else {
+                                      this.recs[card.card.oracleCard.name] = (score / 5);
+                                    }
                                   }
                                 }
                               }
+                              resol();
+                            },
+                            (err) => {
+                              resol();
                             }
-                            resol();
-                          },
-                          (err) => {
-                            resol();
-                          }
-                        );
-                      });
-                      this.user_deck_position++;
+                          );
+                        });
+                        this.user_deck_position++;
+                      }
+                      resolv();
+                    },
+                    (erro) => {
+                      resolv();
                     }
-                    resolv();
-                  },
-                  (erro) => {
-                    resolv();
-                  }
-                )
-              });
+                  )
+                });
+              }
               top_decks.results.splice(random_user, 1);
               this.top_deck_position++;
             }

@@ -16,6 +16,10 @@ import { ThemeEditComponent } from './theme-edit/theme-edit.component';
 import { DeckMetricsComponent } from './deck-metrics/deck-metrics.component';
 import { ArchidektRecsComponent } from './archidekt-recs/archidekt-recs.component';
 import { MatSliderModule } from "@angular/material/slider";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -41,7 +45,11 @@ import { MatSliderModule } from "@angular/material/slider";
     NgbModule,
     FormsModule,
     NgChartsModule,
-    MatSliderModule
+    MatSliderModule,
+    MatProgressSpinnerModule,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
