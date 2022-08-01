@@ -50,6 +50,15 @@ export class DeckEditComponent implements OnInit {
       });
   }
 
+  hasColor(check_deck, check_color) {
+    if(this.colors[this.deck.commander].includes(check_color) || (this.deck.partner_commander && this.colors[this.deck.partner_commander].includes(check_color))) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
   togglePartner() {
     if (this.has_partner) {
       this.deck.partner_commander = null;
@@ -126,6 +135,10 @@ export class DeckEditComponent implements OnInit {
     let cur = await Scry.Cards.byName(this.deck.commander);
     // @ts-ignore
     this.colors[this.deck.commander] = cur.color_identity;
+    if (this.deck.partner_commander) {
+      let cur_2 = await Scry.Cards.byName(this.deck.partner_commander);
+      this.colors[this.deck.partner_commander] = cur_2.color_identity;
+    }
   }
 
   // @ts-ignore
