@@ -9,7 +9,8 @@ export const environment = {
   themes_url: 'http://192.168.1.19:3000/themes',
   users_url: 'http://192.168.1.19:3000/users',
   login_url: 'http://192.168.1.19:3000/login',
-  edhrec_commander_url: 'http://192.168.1.19:2525/commander'
+  edhrec_commander_url: 'http://192.168.1.19:2525/commander',
+  edhrec_top_week_url: 'http://192.168.1.19:2525/top/week'
 };
 
 /*

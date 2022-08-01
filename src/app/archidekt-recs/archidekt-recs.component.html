@@ -66,7 +66,8 @@
               <mat-slide-toggle [(ngModel)]="toggle_g">Green</mat-slide-toggle><br>
               <mat-slide-toggle [(ngModel)]="toggle_c" [disabled]="toggle_w || toggle_u || toggle_b || toggle_r || toggle_g">Colorless</mat-slide-toggle><br>
             </div>
-            <mat-slide-toggle [(ngModel)]="toggle_tribal">Allow Tribal</mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="toggle_tribal">Allow Tribal</mat-slide-toggle><br>
+            <mat-slide-toggle [(ngModel)]="toggle_top">Allow Top Commanders</mat-slide-toggle>
           </div>
           <br>
           <button (click)="getRecommendation()" class="btn btn-danger" style="max-width: 200px">Lets Do This!</button>

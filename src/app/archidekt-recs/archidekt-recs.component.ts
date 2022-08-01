@@ -38,6 +38,7 @@ export class ArchidektRecsComponent implements OnInit {
   toggle_g = false;
   toggle_c = false;
   toggle_tribal = true;
+  toggle_top = false;
 
   recs: any = {};
   colors: any = {};
@@ -46,6 +47,7 @@ export class ArchidektRecsComponent implements OnInit {
   my_commanders: string[] = [];
   my_themes = {};
   color_modifiers: any = {};
+  top_week: any = {};
 
   commander_position = 0;
   commander_total = 0;
@@ -68,7 +70,7 @@ export class ArchidektRecsComponent implements OnInit {
   }
 
   filtersOn(): boolean {
-    return this.toggle_colors;
+    return this.toggle_colors || !this.toggle_top;
   }
 
   assignThemeWeights(themes: string[]) {
@@ -217,6 +219,10 @@ export class ArchidektRecsComponent implements OnInit {
     return this.apiService.postApiDataToServer(environment.edhrec_commander_url, { commander: commander });
   }
 
+  getEdhrecTopWeek() {
+    return this.apiService.getApiDataFromServer(environment.edhrec_top_week_url);
+  }
+
   restart_Recs() {
     this.calculating = false;
     this.calculated = false;
@@ -327,6 +333,9 @@ export class ArchidektRecsComponent implements OnInit {
         }
       }
     }
+    if (!this.toggle_top) {
+      return this.top_week.includes(commander);
+    }
     return false;
   }
 
@@ -353,6 +362,19 @@ export class ArchidektRecsComponent implements OnInit {
         this.calculating = false;
         this.calculated = true;
         if (this.filtersOn()) { //Filter out decks that do not match
+          if(!this.toggle_top) {
+            await new Promise<void>(
+              (re => {
+                this.getEdhrecTopWeek().subscribe(
+                  (top) => {
+                    this.top_week = top;
+                    re();
+                  }
+                )
+              })
+            );
+          }
+
           for(let k = 0; k < this.sorted_recs.length; k++) {
             if (this.filterOutRecommendation(this.sorted_recs[k].cmdr)) {
               this.sorted_recs.splice(k, 1);
