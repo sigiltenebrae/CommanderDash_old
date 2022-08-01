@@ -6,7 +6,7 @@
           <div style="text-align: center">
             <h4 style="color: red">Chaos</h4>
           </div>
-
+          Testing: <input class="form-check-input cmdr-check" type="checkbox" value="" id="flexCheckTestActive" [(ngModel)]="testing_recs">
           <p style="color:red;">User:
             <mat-slider
               class="example-margin"
@@ -20,6 +20,7 @@
             </mat-slider>
           </p>
           <p style="color:red;">Color:
+
             <mat-slider
               class="example-margin"
               [disabled]="false"
@@ -102,7 +103,7 @@
                 <!--                  <p *ngFor="let th of deck.themes" style="color: magenta">{{th}}</p>-->
                 <p style="color: magenta">Recommended Theme: </p>
                 <p style="color: magenta">{{deck.random_theme}}</p>
-                <p style="color: magenta">Redommended SubTheme: </p>
+                <p style="color: magenta">Redommended Subtheme: </p>
                 <p style="color: magenta">{{deck.random_subtheme}}</p>
               </div>
               <div class="row" *ngIf="!deck.themes">

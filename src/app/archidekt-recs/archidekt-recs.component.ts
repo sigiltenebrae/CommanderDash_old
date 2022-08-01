@@ -15,7 +15,7 @@ import {NavbarDataService} from "../services/navbar-data.service";
   styleUrls: ['./archidekt-recs.component.scss']
 })
 export class ArchidektRecsComponent implements OnInit {
-  testing_recs = true;
+  testing_recs = false;
 
   current_user: any = {};
   calculating_user: any = {};
@@ -26,9 +26,9 @@ export class ArchidektRecsComponent implements OnInit {
   calc_clock_subscribe;
   subject;
 
-  user_randomness = 75;
-  color_randomness = 75;
-  theme_randomness = 75;
+  user_randomness = 50;
+  color_randomness = 25;
+  theme_randomness = 50;
   search_type = "And";
   toggle_colors = false;
   toggle_w = false;
