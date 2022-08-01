@@ -299,15 +299,36 @@
           </div>
         </div>
       </div>
+      <div *ngIf="has_partner" class="row" style="margin: 10px">
+        <div class="card-edit-image">
+          <div class="card-carosel-view">
+            <div class="card-carosel">
+              <div *ngIf="userMatch()">
+                <div class="card-carosel-left" (click)="downPartnerImage()">
+                  <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <img class="card-image" src="{{deck.partner_image_url}}" alt="">
+                <div class="card-carosel-right" (click)="upPartnerImage()">
+                  <i class="fa-solid fa-angle-right"></i>
+                </div>
+              </div>
+              <div *ngIf="!userMatch()">
+                <img class="card-image" src="{{deck.partner_image_url}}" alt="">
+              </div>
+            </div>&nbsp;
+            <input id="partnerImageEdit" [disabled]="!userMatch()"
+                   type="text" class="form-control bg-dark text-white"
+                   value="{{deck.partner_image_url}}" [(ngModel)]="deck.partner_image_url"><br>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-xl-6">
       <div class="container-fluid">
         <div class="card" style="height: 100%">
-          <div class="card-header" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
-            <div class="row">
-              <div class="col-3">
-              </div>
-              <div class="col-6">
+          <div class="card-header card-header-commander">
+            <div class="row justify-content-center">
+              <div class="col-5">
                 <div class="input-group mb-2">
                   <input id="cmdrEdit" [disabled]="!userMatch()"
                     type="text" class="form-control bg-dark text-white"
@@ -316,15 +337,22 @@
                     [(ngModel)]="deck.commander_new" (ngModelChange)="updateCommander()"
                     [editable]='false'/>
                 </div>
-
               </div>
-              <div class="col-2">
-              </div>
-              <div class="col-1" style="text-align: right">
-                <button type="button" class="btn-close btn-close-white" aria-label="Close" [routerLink]="['/']"></button>
+              <div class="col-5" *ngIf="has_partner">
+                <div class="input-group mb-2">
+                  <input id="partnerEdit" [disabled]="!userMatch()"
+                         type="text" class="form-control bg-dark text-white"
+                         [ngbTypeahead]="card_search"
+                         value="{{deck.partner_new}}"
+                         [(ngModel)]="deck.partner_new" (ngModelChange)="updatePartner()"
+                         [editable]='false'/>
+                </div>
               </div>
             </div>
+            <div *ngIf="!has_partner" class="partner-toggle"><a (click)="togglePartner()"><i class="fa fa-2xl fa-plus" ></i></a></div>
+            <div *ngIf="has_partner" class="partner-toggle"><a (click)="togglePartner()"><i class="fa fa-2xl fa-x" ></i></a></div>
           </div>
+
           <div class="card-body card-deck-edit" style="border-top: 1px solid black; height: 100%;">
 
             <div class="container-fluid" style="margin-top: 50px">

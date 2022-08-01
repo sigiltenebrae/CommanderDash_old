@@ -24,9 +24,12 @@ export class DeckEditComponent implements OnInit {
   temp_theme: any;
   searching = false;
   current_image = -1;
+  current_partner_image = -1;
   currentImages = [];
+  currentPartnerImages = [];
 
   deleting = false;
+  has_partner = false;
 
   constructor(public router: Router, private route: ActivatedRoute, private apiService:ApiInterfaceService, private navDataService: NavbarDataService) { }
 
@@ -47,6 +50,17 @@ export class DeckEditComponent implements OnInit {
       });
   }
 
+  togglePartner() {
+    if (this.has_partner) {
+      this.deck.partner_commander = null;
+      this.deck.partner_image_url = null;
+      this.deck.partner_new = null;
+      this.currentPartnerImages = [];
+      this.current_partner_image = -1;
+    }
+    this.has_partner = !this.has_partner;
+  }
+
   loadPage() {
     if (!this.new_deck)
     {
@@ -55,6 +69,7 @@ export class DeckEditComponent implements OnInit {
           this.deck = response;
           this.deck.image_url_back = "";
           this.deck.commander_new = this.deck.commander;
+          this.deck.partner_new = this.deck.partner;
           this.loadDeckScryfallInfo().then(r => {});
           this.getThemesForDeck(this.deck.id).subscribe(
             (resp) => {
@@ -66,8 +81,15 @@ export class DeckEditComponent implements OnInit {
             // @ts-ignore
             this.currentImages.push(this.deck.image_url);
           }
+          if (this.deck.partner_image_url && this.deck.partner_image_url !== "") {
+            this.current_partner_image = 0;
+            // @ts-ignore
+            this.currentPartnerImages.push(this.deck.partner_image_url);
+            this.deck.partner_image_url_back = this.deck.partner_image_url;
+          }
           this.deck.image_url_back = this.deck.image_url;
           this.getImages().then( r => {});
+          this.getPartnerImages().then(r => {});
         }
       );
     }
@@ -77,7 +99,9 @@ export class DeckEditComponent implements OnInit {
       this.deck.friendly_name = "";
       this.deck.url = "";
       this.deck.image_url = "";
+      this.deck.partner_image_url = null;
       this.deck.image_url_back = "";
+      this.deck.partner_image_url_back = null;
       this.deck.build_rating = 0;
       this.deck.play_rating = 0;
       this.deck.win_rating = 0;
@@ -133,7 +157,18 @@ export class DeckEditComponent implements OnInit {
       this.deck.image_url_back = "";
       this.getImages();
     }
+  }
 
+  updatePartner() {
+    console.log(this.deck);
+    if (this.deck.partner_new && this.deck.partner_new !== "") {
+      this.deck.partner_commander = this.deck.partner_new;
+      this.deck.partner_image_url = "";
+      this.deck.partner_image_url_back = "";
+      this.getPartnerImages();
+      console.log("final");
+      console.log(this.deck);
+    }
   }
 
   getDeck() {
@@ -161,6 +196,27 @@ export class DeckEditComponent implements OnInit {
     }
   }
 
+  async getPartnerImages() {
+    if (this.deck.partner_commander && this.deck.partner_commander !== "") {
+      this.currentPartnerImages = [];
+      if (this.deck.partner_image_url_back !== "") {
+        // @ts-ignore
+        this.currentPartnerImages.push(this.deck.partner_image_url_back);
+      }
+      let cur = await Scry.Cards.byName(this.deck.partner_commander);
+      let cur_prints = await cur.getPrints();
+      for (let print of cur_prints) {
+        let temp_im: string | undefined = print.image_uris?.png;
+        if (temp_im) {
+          // @ts-ignore
+          this.currentPartnerImages.push(temp_im);
+        }
+      }
+      this.current_partner_image = 0;
+      this.deck.partner_image_url = this.currentPartnerImages[this.current_partner_image];
+    }
+  }
+
   upImage() {
     if (this.current_image < this.currentImages.length - 1) {
       this.current_image ++;
@@ -180,6 +236,27 @@ export class DeckEditComponent implements OnInit {
     }
     this.deck.image_url = this.currentImages[this.current_image];
   }
+
+  upPartnerImage() {
+    if (this.current_partner_image < this.currentPartnerImages.length - 1) {
+      this.current_partner_image ++;
+    }
+    else {
+      this.current_partner_image = 0;
+    }
+    this.deck.partner_image_url = this.currentPartnerImages[this.current_partner_image];
+  }
+
+  downPartnerImage() {
+    if (this.current_partner_image > 0) {
+      this.current_partner_image --;
+    }
+    else {
+      this.current_partner_image = this.currentPartnerImages.length - 1;
+    }
+    this.deck.partner_image_url = this.currentPartnerImages[this.current_partner_image];
+  }
+
 
   getThemesForDeck(deck_id: number) {
     return this.apiService.getApiDataFromServer(environment.deck_themes_url + deck_id);
