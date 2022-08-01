@@ -16,9 +16,8 @@ export class DeckViewerComponent implements OnInit {
   decks: any = [];
   colors: any = {};
 
-  constructor(private apiService:ApiInterfaceService, private navDataService: NavbarDataService) { }
-
-  ngOnInit(): void {
+  constructor(private apiService:ApiInterfaceService, private navDataService: NavbarDataService) {
+    this.current_user = this.navDataService.getUser();
     this.navDataService.currentUserData.subscribe( cur_user => {
       this.current_user = cur_user;
       if (this.current_user.id) {
@@ -28,6 +27,11 @@ export class DeckViewerComponent implements OnInit {
         })
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.current_user = this.navDataService.getUser();
+    this.loadPage();
   }
 
   loadPage() {

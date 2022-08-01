@@ -24,12 +24,13 @@ export class AppComponent implements OnInit {
   public commanderNavCollapsed = true;
 
   constructor(private router: Router, private route: ActivatedRoute, private apiService:ApiInterfaceService, private navDataService: NavbarDataService) {
-  }
-
-  ngOnInit(): void {
     this.navDataService.currentUserData.subscribe( cur_user => {
       this.current_user = cur_user;
     });
+    this.loadPage();
+  }
+
+  ngOnInit(): void {
     this.loadPage();
   }
 

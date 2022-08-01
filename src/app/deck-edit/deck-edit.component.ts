@@ -31,10 +31,7 @@ export class DeckEditComponent implements OnInit {
   deleting = false;
   has_partner = false;
 
-  constructor(public router: Router, private route: ActivatedRoute, private apiService:ApiInterfaceService, private navDataService: NavbarDataService) { }
-
-  ngOnInit(): void {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  constructor(public router: Router, private route: ActivatedRoute, private apiService:ApiInterfaceService, private navDataService: NavbarDataService) {
     const routeParams = this.route.snapshot.paramMap;
     this.deckId = Number(routeParams.get('deckId'));
     if (this.deckId > -1) {
@@ -48,6 +45,11 @@ export class DeckEditComponent implements OnInit {
         this.current_user = cur_user;
         this.loadPage();
       });
+  }
+
+  ngOnInit(): void {
+    this.current_user = this.navDataService.getUser();
+    this.loadPage();
   }
 
   hasColor(check_color) {
@@ -176,14 +178,11 @@ export class DeckEditComponent implements OnInit {
   }
 
   updatePartner() {
-    console.log(this.deck);
     if (this.deck.partner_new && this.deck.partner_new !== "") {
       this.deck.partner_commander = this.deck.partner_new;
       this.deck.partner_image_url = "";
       this.deck.partner_image_url_back = "";
       this.getPartnerImages();
-      console.log("final");
-      console.log(this.deck);
     }
   }
 
@@ -320,7 +319,6 @@ export class DeckEditComponent implements OnInit {
       }
     }
     else {
-      console.log(this.deck);
       if (this.deck.commander && this.deck.commander !== "") {
         if (this.deck.friendly_name && this.deck.friendly_name !== "") {
           this.apiService.postApiDataToServer(environment.decks_url, JSON.stringify(this.deck)).subscribe(

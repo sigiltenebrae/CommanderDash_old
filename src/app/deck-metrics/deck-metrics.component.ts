@@ -79,7 +79,6 @@ export class DeckMetricsComponent implements OnInit {
   };
 
   constructor(public router: Router, private apiService:ApiInterfaceService, private navDataService: NavbarDataService) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.navDataService.currentUserData.subscribe( cur_user => {
       if (cur_user) {
         this.current_user = cur_user;
@@ -91,6 +90,8 @@ export class DeckMetricsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.current_user = this.navDataService.getUser();
+    this.loadPage();
   }
 
   loadPage() {

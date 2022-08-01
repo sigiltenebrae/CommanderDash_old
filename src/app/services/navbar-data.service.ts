@@ -13,6 +13,7 @@ export class NavbarDataService {
 
   private currentUser = new Subject();
   currentUserData = this.currentUser.asObservable();
+  currentUserNum = 1;
 
   constructor(private apiService:ApiInterfaceService) { }
 
@@ -20,7 +21,12 @@ export class NavbarDataService {
     this.deckSortType.next(sort_type);
   }
 
+  getUser() {
+    return this.currentUserNum;
+  }
+
   setUser(user: any) {
+    this.currentUserNum = user;
     this.currentUser.next(user);
   }
 }
