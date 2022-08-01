@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import {ApiInterfaceService} from "../services/api-interface.service";
 import {NavbarDataService} from "../services/navbar-data.service";
 import * as Scry from "scryfall-sdk";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-deck-metrics',
@@ -77,22 +78,25 @@ export class DeckMetricsComponent implements OnInit {
     indexAxis: 'y'
   };
 
-  constructor(private apiService:ApiInterfaceService, private navDataService: NavbarDataService) {
+  constructor(public router: Router, private apiService:ApiInterfaceService, private navDataService: NavbarDataService) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.navDataService.currentUserData.subscribe( cur_user => {
+      if (cur_user) {
+        this.current_user = cur_user;
+        if (this.current_user.id) {
+          this.loadPage();
+        }
+      }
+    });
   }
 
   ngOnInit() {
-    this.navDataService.currentUserData.subscribe( cur_user => {
-      this.current_user = cur_user;
-      if (this.current_user.id) {
-        this.loadPage();
-      }
-    });
-
   }
 
   loadPage() {
     this.decks = {};
     this.theme_counts = {};
+    this.colors = {};
     this.getDecksForUser().subscribe(
       async (response) => {
         this.decks = response;
@@ -100,7 +104,7 @@ export class DeckMetricsComponent implements OnInit {
           await new Promise<void>(
             (res) => {
               this.getThemesForDeck(deck.id).subscribe(
-                (resp) => {
+                async (resp) => {
                   deck.themes = resp;
                   for (let theme of deck.themes) {
                     if (this.theme_counts[theme.name] != null) {
@@ -109,16 +113,25 @@ export class DeckMetricsComponent implements OnInit {
                       this.theme_counts[theme.name] = 1;
                     }
                   }
+                  let cur = await Scry.Cards.byName(deck.commander);
+                  // @ts-ignore
+                  this.colors[deck.commander] = cur.color_identity;
+                  if (deck.partner_commander) {
+                    await new Promise<void>(
+                      async (reso) => {
+                        let cur_2 = await Scry.Cards.byName(deck.partner_commander);
+                        this.colors[deck.partner_commander] = cur_2.color_identity;
+                        reso();
+                      });
+
+                  }
                   res();
                 });
-            })
-
+            });
         }
-        this.loadDeckScryfallInfo().then(r => {
-          this.loadRatingData();
-          this.loadDeckStats();
-          this.loadThemeCounts();
-        });
+        this.loadRatingData();
+        this.loadDeckStats();
+        this.loadThemeCounts();
       }
     );
   }
@@ -135,14 +148,6 @@ export class DeckMetricsComponent implements OnInit {
     return this.apiService.getApiDataFromServer(environment.deck_themes_url + deck_id);
   }
 
-  async loadDeckScryfallInfo() {
-    for (let deck of this.decks) {
-      let cur = await Scry.Cards.byName(deck.commander);
-      // @ts-ignore
-      this.colors[deck.commander] = cur.color_identity;
-    }
-  }
-
   loadDeckStats() {
     let w = 0; let u = 0; let b = 0; let r = 0; let g = 0; let total = 0;
     for (let deck of this.decks) {
@@ -150,17 +155,32 @@ export class DeckMetricsComponent implements OnInit {
         if (this.colors[deck.commander].includes('W')) {
           w++;
         }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('W')) {
+          w++
+        }
         if (this.colors[deck.commander].includes('U')) {
           u++;
+        }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('U')) {
+          u++
         }
         if (this.colors[deck.commander].includes('B')) {
           b++;
         }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('B')) {
+          b++
+        }
         if (this.colors[deck.commander].includes('R')) {
           r++;
         }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('R')) {
+          r++
+        }
         if (this.colors[deck.commander].includes('G')) {
           g++;
+        }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('G')) {
+          g++
         }
         total++;
       }
@@ -205,8 +225,13 @@ export class DeckMetricsComponent implements OnInit {
     let w_build = 0; let u_build = 0; let b_build = 0; let r_build = 0; let g_build = 0;
     let w_play = 0; let u_play = 0; let b_play = 0; let r_play = 0; let g_play = 0;
     for (let deck of this.decks) {
-      if (deck.build_rating > 0 && deck.play_rating > 0) {
-        if (this.colors[deck.commander].includes('W')) {
+      if (deck.play_rating > 0) {
+        if (this.colors[deck.commander].includes("W")) {
+          w_build += (deck.build_rating);
+          w_play += (deck.play_rating);
+          w++;
+        }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes("W")) {
           w_build += (deck.build_rating);
           w_play += (deck.play_rating);
           w++;
@@ -216,7 +241,17 @@ export class DeckMetricsComponent implements OnInit {
           u_play += (deck.play_rating);
           u++;
         }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('U')) {
+          u_build += (deck.build_rating);
+          u_play += (deck.play_rating);
+          u++;
+        }
         if (this.colors[deck.commander].includes('B')) {
+          b_build += (deck.build_rating);
+          b_play += (deck.play_rating);
+          b++;
+        }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('B')) {
           b_build += (deck.build_rating);
           b_play += (deck.play_rating);
           b++;
@@ -226,19 +261,40 @@ export class DeckMetricsComponent implements OnInit {
           r_play += (deck.play_rating);
           r++;
         }
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('R')) {
+          r_build += (deck.build_rating);
+          r_play += (deck.play_rating);
+          r++;
+        }
         if (this.colors[deck.commander].includes('G')) {
           g_build += (deck.build_rating);
           g_play += (deck.play_rating);
           g++;
         }
-
+        else if (deck.partner_commander && this.colors[deck.partner_commander].includes('G')) {
+          g_build += (deck.build_rating);
+          g_play += (deck.play_rating);
+          g++;
+        }
       }
     }
+    let w_build_data = w > 0 ? w_build / w : 0;
+    let u_build_data = u > 0 ? u_build / u : 0;
+    let b_build_data = b > 0 ? b_build / b : 0;
+    let r_build_data = r > 0 ? r_build / r : 0;
+    let g_build_data = g > 0 ? g_build / g : 0;
+    let w_play_data = w > 0 ? w_play / w : 0;
+    let u_play_data = u > 0 ? u_play / u : 0;
+    let b_play_data = b > 0 ? b_play / b : 0;
+    let r_play_data = r > 0 ? r_play / r : 0;
+    let g_play_data = g > 0 ? g_play / g : 0;
+    let build_data = [ w_build_data, u_build_data, b_build_data, r_build_data, g_build_data ];
+    let play_data = [ w_play_data, u_play_data, b_play_data, r_play_data, g_play_data ];
     this.buildRatingChartData = {
       labels: [ 'W', 'U', 'B', 'R', 'G' ],
       datasets: [
         {
-          data: [ w_build / w, u_build / u, b_build / b, r_build / r, g_build / g ],
+          data: build_data,
           backgroundColor: [
             'rgba(201, 203, 207, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -271,7 +327,7 @@ export class DeckMetricsComponent implements OnInit {
           label: 'Fun to Build',
         },
         {
-          data: [ w_play / w, u_play / u, b_play / b, r_play / r, g_play / g ],
+          data: play_data,
           backgroundColor: [
             'rgba(255, 255, 255, 0.2)',
             'rgba(0, 0, 255, 0.2)',

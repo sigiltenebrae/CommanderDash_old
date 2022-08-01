@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {ApiInterfaceService} from "./api-interface.service";
 import {environment} from "../../environments/environment";
 
@@ -11,7 +11,7 @@ export class NavbarDataService {
   private deckSortType = new BehaviorSubject('id');
   sharedDeckSort = this.deckSortType.asObservable();
 
-  private currentUser = new BehaviorSubject({});
+  private currentUser = new Subject();
   currentUserData = this.currentUser.asObservable();
 
   constructor(private apiService:ApiInterfaceService) { }

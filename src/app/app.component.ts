@@ -14,7 +14,7 @@ import {environment} from "../environments/environment";
 export class AppComponent implements OnInit {
   title = 'CommanderDash';
   users: any = [];
-  current_user: any;
+  current_user: any = "";
 
   public current_deck: any;
   all_decks: any[] = [];

@@ -50,7 +50,7 @@ export class DeckEditComponent implements OnInit {
       });
   }
 
-  hasColor(check_deck, check_color) {
+  hasColor(check_color) {
     if(this.colors[this.deck.commander].includes(check_color) || (this.deck.partner_commander && this.colors[this.deck.partner_commander].includes(check_color))) {
       return true;
     }

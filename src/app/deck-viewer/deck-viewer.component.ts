@@ -46,6 +46,27 @@ export class DeckViewerComponent implements OnInit {
     );
   }
 
+  hasColor(check_deck, check_color) {
+    if (check_deck && check_deck.commander) {
+      if (this.colors && this.colors[check_deck.commander]) {
+        if (this.colors[check_deck.commander].includes(check_color)) {
+          return true;
+        }
+      } else {
+        return false;
+      }
+      if (check_deck.partner_commander) {
+        if (this.colors[check_deck.partner_commander] && this.colors[check_deck.partner_commander].includes(check_color)) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
 
   getDecks1() {
     return this.apiService.getApiDataFromServer(environment.decks_url);
@@ -64,6 +85,10 @@ export class DeckViewerComponent implements OnInit {
       let cur = await Scry.Cards.byName(deck.commander);
       // @ts-ignore
       this.colors[deck.commander] = cur.color_identity;
+      if (deck.partner_commander) {
+        let cur_2 = await Scry.Cards.byName(deck.partner_commander);
+        this.colors[deck.partner_commander] = cur_2.color_identity;
+      }
     }
   }
 
