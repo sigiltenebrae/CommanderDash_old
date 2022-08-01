@@ -69,7 +69,10 @@ export class DeckEditComponent implements OnInit {
           this.deck = response;
           this.deck.image_url_back = "";
           this.deck.commander_new = this.deck.commander;
-          this.deck.partner_new = this.deck.partner;
+          this.deck.partner_new = this.deck.partner_commander;
+          if (this.deck.partner_commander) {
+            this.has_partner = true;
+          }
           this.loadDeckScryfallInfo().then(r => {});
           this.getThemesForDeck(this.deck.id).subscribe(
             (resp) => {
@@ -304,6 +307,7 @@ export class DeckEditComponent implements OnInit {
       }
     }
     else {
+      console.log(this.deck);
       if (this.deck.commander && this.deck.commander !== "") {
         if (this.deck.friendly_name && this.deck.friendly_name !== "") {
           this.apiService.postApiDataToServer(environment.decks_url, JSON.stringify(this.deck)).subscribe(

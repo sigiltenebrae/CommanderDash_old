@@ -40,6 +40,7 @@ export class ArchidektRecsComponent implements OnInit {
   toggle_c = false;
   toggle_tribal = true;
   toggle_top = false;
+  toggle_partner = false;
 
   recs: any = {};
   colors: any = {};
@@ -227,7 +228,7 @@ export class ArchidektRecsComponent implements OnInit {
   }
 
   getEdhrecTopWeek() {
-    return this.apiService.getApiDataFromServer(environment.edhrec_top_week_url);
+    return this.apiService.getApiDataFromServer(environment.edhrec_top_year_url);
   }
 
   restart_Recs() {
@@ -377,6 +378,9 @@ export class ArchidektRecsComponent implements OnInit {
                     this.top_week = top;
                     if (!this.top_week || this.top_week.length == 0) {
                       this.top_week = top_saved;
+                    }
+                    if (this.top_week.length > 30) {
+                      this.top_week.length = 30;
                     }
                     re();
                   }
@@ -833,9 +837,12 @@ export class ArchidektRecsComponent implements OnInit {
                   for (let col of cur.color_identity) {
                     deck.count *=
                       Math.pow(this.color_modifiers[col], (1 - (this.color_randomness / 100)));
-                    if (partner) { //debugging for partner TURN OFF
-                      deck.count *= 30;
+                    if (this.toggle_partner) {
+                      if (partner) { //debugging for partner TURN OFF
+                        deck.count *= 30;
+                      }
                     }
+
                   }
                   resolve();
                 }

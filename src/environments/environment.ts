@@ -10,7 +10,8 @@ export const environment = {
   users_url: 'http://192.168.1.19:3000/users',
   login_url: 'http://192.168.1.19:3000/login',
   edhrec_commander_url: 'http://192.168.1.19:2525/commander',
-  edhrec_top_week_url: 'http://192.168.1.19:2525/top/week'
+  edhrec_top_week_url: 'http://192.168.1.19:2525/top/week',
+  edhrec_top_year_url: 'http://192.168.1.19:2525/top/year'
 };
 
 /*
