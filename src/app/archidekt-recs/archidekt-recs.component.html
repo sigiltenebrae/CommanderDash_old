@@ -100,6 +100,7 @@
             <div style="width: 275px;">
               <img src="{{deck.image_url}}" alt="{{deck.commander}}" style="height: 384px;">
               <br>
+              <img *ngIf="deck.partner" src="{{deck.partner_image_url}}" alt="{{deck.partner_commander}}" style="height: 384px">
               <div class="row" *ngIf="deck.themes">
                 <!--                  <p *ngFor="let th of deck.themes" style="color: magenta">{{th}}</p>-->
                 <p style="color: magenta">Recommended Theme: </p>

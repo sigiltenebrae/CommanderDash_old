@@ -4,6 +4,7 @@ import {ApiInterfaceService} from "../services/api-interface.service";
 
 import { environment } from "../../environments/environment";
 import { subthemes } from "../subthemes";
+import { top_saved } from "../top_commanders";
 
 import * as Scry from "scryfall-sdk";
 import {NavbarDataService} from "../services/navbar-data.service";
@@ -74,19 +75,25 @@ export class ArchidektRecsComponent implements OnInit {
   }
 
   assignThemeWeights(themes: string[]) {
-    let weighted_themes = {};
-    let x_coeff = 0;
-    let factor = (1 - ((this.theme_randomness) / 100));
-    for (let i = 0; i < themes.length; i++) {
-      x_coeff += Math.pow(factor, i);
+    if (themes) {
+      let weighted_themes = {};
+      let x_coeff = 0;
+      let factor = (1 - ((this.theme_randomness) / 100));
+      for (let i = 0; i < themes.length; i++) {
+        x_coeff += Math.pow(factor, i);
+      }
+      let base = 100 / x_coeff;
+      let cur_coeff = 0;
+      for(let i = 0; i < themes.length; i++) {
+        cur_coeff += Math.pow(factor, i);
+        weighted_themes[themes[i]] = Math.floor(100 - ((cur_coeff - 1) * base)) / 100;
+      }
+      return weighted_themes;
     }
-    let base = 100 / x_coeff;
-    let cur_coeff = 0;
-    for(let i = 0; i < themes.length; i++) {
-      cur_coeff += Math.pow(factor, i);
-      weighted_themes[themes[i]] = Math.floor(100 - ((cur_coeff - 1) * base)) / 100;
+    else {
+      return {};
     }
-    return weighted_themes;
+
   }
 
 
@@ -368,13 +375,15 @@ export class ArchidektRecsComponent implements OnInit {
                 this.getEdhrecTopWeek().subscribe(
                   (top) => {
                     this.top_week = top;
+                    if (!this.top_week || this.top_week.length == 0) {
+                      this.top_week = top_saved;
+                    }
                     re();
                   }
                 )
               })
             );
           }
-
           for(let k = 0; k < this.sorted_recs.length; k++) {
             if (this.filterOutRecommendation(this.sorted_recs[k].cmdr)) {
               this.sorted_recs.splice(k, 1);
@@ -390,20 +399,35 @@ export class ArchidektRecsComponent implements OnInit {
             break;
           }
           let final_deck = await this.getScryfallCommanderData(this.sorted_recs[j].cmdr);
+          let partner = false;
+          if (final_deck.keywords.includes("Partner")) {
+            partner = true;
+          }
           let final_deck_images = await final_deck.getPrints();
           if (final_deck_images && final_deck_images.length > 0 && final_deck_images[0].image_uris) {
             this.final_decks.push(
               {
                 commander: this.sorted_recs[j].cmdr,
-                image_url: final_deck_images[0].image_uris.png
+                image_url: final_deck_images[0].image_uris.png,
+                partner: partner
               }
             );
+          }
+          else if(!final_deck_images[0].image_uris && final_deck_images[0].card_faces.length > 1) {
+            this.final_decks.push(
+              {
+                commander: this.sorted_recs[j].cmdr,
+                image_url: final_deck_images[0].card_faces[0].image_uris.png,
+                partner: partner
+              }
+            )
           }
           else {
             this.final_decks.push(
               {
                 commander: this.sorted_recs[j].cmdr,
-                image_url: ''
+                image_url: '',
+                partner: partner
               }
             )
           }
@@ -414,14 +438,14 @@ export class ArchidektRecsComponent implements OnInit {
           await new Promise<void>(
             (res) => {
               this.getEdhrecData(final_deck.commander).subscribe(
-                (com) => {
+                async (com) => {
                   let edhrec_data: any = com;
                   final_deck.themes = edhrec_data.themes;
 
                   let weighted_themes = this.assignThemeWeights(final_deck.themes);
                   let weighted_themes_list: any[] = [];
                   for (let w_theme of Object.keys(weighted_themes)) {
-                    if(this.my_themes[w_theme] != null) {
+                    if (this.my_themes[w_theme] != null) {
                       weighted_themes[w_theme] *= Math.pow(this.my_themes[w_theme].val, ((this.theme_randomness / 100)));
                     }
                     let jitter = Math.floor(Math.random() * this.theme_randomness) / 100;
@@ -465,8 +489,64 @@ export class ArchidektRecsComponent implements OnInit {
                       }
                     }
                   }
-                  final_deck.random_theme = weighted_themes_list.length > 0 ? weighted_themes_list[0].theme: "";
-                  final_deck.random_subtheme = weighted_subthemes_list.length > 0 ? weighted_subthemes_list[0].theme: "";
+                  if (final_deck.partner) {
+                    console.log("partner");
+                    if (weighted_themes_list.length > 0) {
+                      console.log("theme list: ");
+                      console.log(weighted_themes_list);
+                      if (weighted_themes_list[0].theme.toLowerCase() === "see more" || weighted_themes_list[0].theme.toLowerCase() === "none") {
+                        weighted_themes_list.splice(0, 1);
+                      }
+                      if (weighted_themes_list[0].theme.toLowerCase() === "see more" || weighted_themes_list[0].theme.toLowerCase() === "none") {
+                        weighted_themes_list.splice(0, 1);
+                      }
+                      let cur_partner = weighted_themes_list[0].theme;
+                      console.log("partner: " + cur_partner);
+                      final_deck.partner_commander = cur_partner;
+                      let partner_data = await this.getScryfallCommanderData(cur_partner);
+                      if (partner_data != null) {
+                        console.log(partner_data);
+                        let partner_images = await partner_data.getPrints();
+                        console.log(partner_images);
+                        final_deck.partner_image_url = partner_images[0].image_uris.png;
+                        await new Promise<void>(
+                          (getPartner) => {
+                            this.getEdhrecData(final_deck.commander + " " + final_deck.partner_commander).subscribe(
+                              (partcmdr) => {
+                                let edhrecpartnerdata: any = partcmdr;
+                                console.log(edhrecpartnerdata);
+                                final_deck.themes = edhrecpartnerdata.themes;
+                                weighted_themes = this.assignThemeWeights(final_deck.themes);
+                                weighted_themes_list = [];
+                                for (let w_theme of Object.keys(weighted_themes)) {
+                                  if (this.my_themes[w_theme] != null) {
+                                    weighted_themes[w_theme] *= Math.pow(this.my_themes[w_theme].val, ((this.theme_randomness / 100)));
+                                  }
+                                  let jitter = Math.floor(Math.random() * this.theme_randomness) / 100;
+                                  weighted_themes[w_theme] *= Math.pow(1 - jitter, ((this.theme_randomness / 100)));
+                                  weighted_themes_list.push(
+                                    {
+                                      theme: w_theme,
+                                      weight: weighted_themes[w_theme]
+                                    });
+                                }
+                                weighted_themes_list.sort((a, b) => (b.weight > a.weight) ? 1 : -1);
+                                if (!this.toggle_tribal) { //Remove Tribal Results
+                                  for (let p = 0; p < weighted_themes_list.length; p++) {
+                                    if (weighted_themes_list[p].theme.toLowerCase().includes("tribal")) {
+                                      weighted_themes_list.splice(p, 1);
+                                      p--;
+                                    }
+                                  }
+                                }
+                                getPartner();
+                              });
+                          });
+                      }
+                    }
+                  }
+                  final_deck.random_theme = weighted_themes_list.length > 0 ? weighted_themes_list[0].theme : "";
+                  final_deck.random_subtheme = weighted_subthemes_list.length > 0 ? weighted_subthemes_list[0].theme : "";
 
                   res();
                 }, (e) => {
@@ -483,8 +563,14 @@ export class ArchidektRecsComponent implements OnInit {
   async getScryfallCommanderData(commander) {
     return new Promise<any>(
       async (resolve) => {
-        let cur = await Scry.Cards.byName(commander)
-        resolve(cur);
+        try {
+          let cur = await Scry.Cards.byName(commander);
+          resolve(cur);
+        }
+        catch (e) {
+          resolve(null);
+        }
+
       }
     );
   }
@@ -572,7 +658,12 @@ export class ArchidektRecsComponent implements OnInit {
                               let deck_info: any = r;
                               for (let card of deck_info.cards) {
                                 if (card.categories.includes("Commander")) {
-                                  if (card.card.oracleCard.name !== commander && card.card.oracleCard.name !== "Kenrith, the Returned King") {
+                                  if (card.card.oracleCard.name
+                                    !== commander &&
+                                    card.card.oracleCard.name !== "Kenrith, the Returned King" &&
+                                    card.card.oracleCard.name !== "Golos, Tireless Pilgrim" &&
+                                    card.card.oracleCard.name !== "Morophon, the Boundless"
+                                  ) {
                                     if (this.recs[card.card.oracleCard.name] != null) {
                                       this.recs[card.card.oracleCard.name] += (score / 5);
                                     } else {
@@ -734,10 +825,17 @@ export class ArchidektRecsComponent implements OnInit {
               Scry.Cards.byName(deck.cmdr).then(
                 cur =>
                 {
+                  let partner = false;
+                  if (cur.keywords.includes("Partner")) {
+                    partner = true;
+                  }
                   this.colors[deck.cmdr] = cur.color_identity;
                   for (let col of cur.color_identity) {
                     deck.count *=
                       Math.pow(this.color_modifiers[col], (1 - (this.color_randomness / 100)));
+                    if (partner) { //debugging for partner TURN OFF
+                      deck.count *= 30;
+                    }
                   }
                   resolve();
                 }

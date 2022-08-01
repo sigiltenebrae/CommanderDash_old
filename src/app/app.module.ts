@@ -20,6 +20,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
+import { TestingAreaComponent } from './testing-area/testing-area.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import {MatSelectModule} from "@angular/material/select";
     ThemeEditComponent,
     DeckMetricsComponent,
     ArchidektRecsComponent,
+    TestingAreaComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,8 @@ import {MatSelectModule} from "@angular/material/select";
       {path: 'decks/:deckId', component: DeckEditComponent},
       {path: 'themes', component: ThemeEditComponent},
       {path: 'metrics', component: DeckMetricsComponent},
-      {path: 'recommendations', component: ArchidektRecsComponent}
+      {path: 'recommendations', component: ArchidektRecsComponent},
+      {path: 'testing', component: TestingAreaComponent}
     ]),
     NgbModule,
     FormsModule,
