@@ -78,7 +78,12 @@
       <div *ngIf="calculating" style="background-color: rgba(255, 255, 255, 0.9); padding: 30px; border-radius: 10px;">
         <div *ngIf="current_deck" >
           <div class="card-holder">
-            <img src="{{current_deck.image_url}}" alt="{{current_commander}}">
+            <div *ngIf="calculating_partner">
+              <img src="{{current_deck.partner_image_url}}" alt="{{current_deck.partner_commander}}">
+            </div>
+            <div *ngIf="!calculating_partner">
+              <img src="{{current_deck.image_url}}" alt="{{current_commander}}">
+            </div>
             <div class="centered-spinner">
               <mat-spinner [diameter]="64"></mat-spinner>
             </div>

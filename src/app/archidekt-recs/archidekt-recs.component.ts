@@ -20,6 +20,7 @@ export class ArchidektRecsComponent implements OnInit {
 
   current_user: any = {};
   calculating_user: any = {};
+  calculating_partner = false;
 
   calculating = false;
   calculated = false;
@@ -602,6 +603,17 @@ export class ArchidektRecsComponent implements OnInit {
                         })
                       }
                     );
+                    if (deck.partner_commander) {
+                      this.calculating_partner = true;
+                      await new Promise<void>(
+                        (resolve) => {
+                          this.getRecommendationForCommander(deck.partner_commander, deck.play_rating).then(r => {
+                            this.calculating_partner = false;
+                            resolve();
+                          })
+                        }
+                      )
+                    }
                     if (this.testing_recs) {
                       break;
                     }

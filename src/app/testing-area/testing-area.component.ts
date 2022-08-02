@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import * as Scry from "scryfall-sdk";
 import {environment} from "../../environments/environment";
 import {ApiInterfaceService} from "../services/api-interface.service";
@@ -8,12 +8,15 @@ import {ApiInterfaceService} from "../services/api-interface.service";
   templateUrl: './testing-area.component.html',
   styleUrls: ['./testing-area.component.scss']
 })
+
+
 export class TestingAreaComponent implements OnInit {
 
   deck: any = null;
   colors: any = {};
   has_partner = {};
   deck_id = 89;
+
 
   async loadDeckScryfallInfo() {
     let cur = await Scry.Cards.byName(this.deck.commander);
@@ -47,6 +50,18 @@ export class TestingAreaComponent implements OnInit {
     return false;
   }
 
+  displayLeft() {
+    this.deck.display = 'right';
+  }
+
+  displayRight() {
+    this.deck.display = 'left';
+  }
+
+  displayBoth() {
+    this.deck.display = 'both';
+  }
+
   getThemesForDeck() {
     return this.apiService.getApiDataFromServer(environment.deck_themes_url + this.deck_id);
   }
@@ -59,9 +74,7 @@ export class TestingAreaComponent implements OnInit {
     this.getDeck().subscribe(
       (response) => {
         this.deck = response;
-        this.deck.image_url_back = "";
-        this.deck.commander_new = this.deck.commander;
-        this.deck.partner_new = this.deck.partner_commander;
+        this.deck.display = "both";
         if (this.deck.partner_commander) {
           this.has_partner = true;
         }
